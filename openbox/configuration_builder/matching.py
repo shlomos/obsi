@@ -38,7 +38,8 @@ class IntMatchField(MatchField):
         self._fmt = "%0{bytes}x".format(bytes=bytes * 2)
 
     def _to_output(self, value):
-        return self._fmt % _to_int(value)
+        value = value if isinstance(value, int) else _to_int(value)
+        return self._fmt % value
 
 
 class MacMatchField(MatchField):

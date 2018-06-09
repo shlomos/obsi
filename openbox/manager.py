@@ -405,15 +405,14 @@ class Manager(object):
     @gen.coroutine
     def set_processing_graph(self, required_modules, blocks, connections):
         processing_graph = dict(requirements=required_modules, blocks=blocks, connections=connections)
-        self._engine_config_builder = self.config_builder.engine_config_builder_from_dict(processing_graph,
-                                                                                          config.Engine.REQUIREMENTS)
+        self._engine_config_builder = self.config_builder.engine_config_builder_from_dict(
+            processing_graph,
+            config.Engine.REQUIREMENTS)
         engine_config = self._engine_config_builder.to_engine_config()
         app_log.debug("Setting processing graph to:\n%s" % engine_config)
         client = httpclient.AsyncHTTPClient(request_timeout=config.Manager.REQUEST_TIMEOUT)
-
         uri = _get_full_uri(config.Control.Rest.BASE_URI, config.Control.Rest.Endpoints.CONFIG)
         yield client.fetch(uri, method='POST', body=json_encode(engine_config))
-
         # make sure we are stable in the new config
         # the config is in the same URI but with a GET method
         response = yield client.fetch(uri)
