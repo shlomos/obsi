@@ -639,6 +639,22 @@ StringClassifier = build_open_box_block('StringClassifier',
                                             HandlerField('reset_counts', FieldType.NULL),
                                         ]
                                         )
+
+UtilizationMonitor = build_open_box_block('UtilizationMonitor',
+                                         config_fields=[
+                                             ConfigField('window', True, FieldType.INTEGER),
+                                             ConfigField('proc_threshold', True, FieldType.NUMBER)
+                                         ],
+                                         read_handlers=[
+                                             HandlerField('count', FieldType.INTEGER),
+                                             HandlerField('time', FieldType.NUMBER),
+                                             HandlerField('average_time', FieldType.INTEGER),
+                                             HandlerField('average_window_time', FieldType.NUMBER)
+                                         ],
+                                         write_handlers=[
+                                             HandlerField('reset', FieldType.NULL)
+                                         ])
+
 if __name__ == '__main__':
     blocks = [block.to_dict_schema() for block in OpenBoxBlock.blocks_registry.values()]
     with open('blocks.json', 'wb') as f:
