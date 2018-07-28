@@ -7,7 +7,7 @@ output_match4::ToDump(output_test.pcap, SNAPLEN 0, ENCAP ETHER);
 output_match5::ToDump(output_rest.pcap, SNAPLEN 0, ENCAP ETHER);
 
 eth_classifier::Classifier(12/0800, -);
-classifier::StringClassifier("xnet\x02", "ynet", "games", "test");
+classifier::StringClassifier(TYPE "wumanber", "xnet\x02", "ynet", "games", "test");
 input_cap
 	-> eth_classifier
 	-> CheckIPHeader(14)

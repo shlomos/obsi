@@ -2,6 +2,7 @@
 #define CLICK_STRINGCLASSIFIER_HH
 #include <click/element.hh>
 #include "ahocorasickplus.hh"
+#include "modifiedwumanber.hh"
 CLICK_DECLS
 
 /*
@@ -49,6 +50,7 @@ tcpdump(1) */
 
 class StringClassifier : public Element { 
 public:
+
     StringClassifier() CLICK_COLD;
     ~StringClassifier() CLICK_COLD;
 
@@ -67,7 +69,7 @@ private:
     bool is_valid_patterns(Vector<String> &patterns, ErrorHandler *errh) const;
     static String read_handler(Element *, void *) CLICK_COLD;
     static int write_handler(const String&, Element*, void*, ErrorHandler*) CLICK_COLD;
-    AhoCorasick _matcher;
+    MyMatcher *_matcher;
     Vector<String> _patterns;
     int _matches;
 };
