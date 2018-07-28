@@ -2,6 +2,7 @@
 #define CLICK_STRINGMATCHER_HH
 #include <click/element.hh>
 #include "ahocorasickplus.hh"
+#include "modifiedwumanber.hh"
 CLICK_DECLS
 
 /*
@@ -57,7 +58,7 @@ public:
 private:
     bool is_valid_patterns(Vector<String> &, ErrorHandler *); 
     static int write_handler(const String &, Element *e, void *thunk, ErrorHandler *errh) CLICK_COLD;
-    AhoCorasick _matcher;
+    MyMatcher *_matcher;
     Vector<String> _patterns;
     int _matches;
 };

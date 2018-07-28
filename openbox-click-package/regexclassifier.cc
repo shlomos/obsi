@@ -9,7 +9,7 @@
 CLICK_DECLS
 
 RegexClassifier::RegexClassifier() : 
-_program(0)
+        _program(0)
 {
 }
 
