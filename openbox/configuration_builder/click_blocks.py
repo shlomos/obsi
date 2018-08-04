@@ -930,15 +930,16 @@ SetTimestampDelta = build_click_block('SetTimestampDelta',
                                       output='set_timestamp_delta',
                                       )
 StringClassifier = build_click_block('StringClassifier',
-                                     config_mapping=dict(pattern=(['pattern'], 'to_quoted_json_escaped')),
+                                     config_mapping=dict(
+                                         matcher=_no_transform('matcher'),
+                                         pattern=(['pattern'], 'to_quoted_json_escaped')),
                                      elements=[
                                          dict(name='string_classifier', type='StringClassifier',
-                                              config=dict(pattern='$pattern')),
+                                              config=dict(matcher='$matcher', pattern='$pattern')),
                                          dict(name='counter', type='MultiCounter', config={}),
                                      ],
                                      multi_connections=[
-                                         dict(src='string_classifier', dst='counter', based_on='pattern',
-                                              extra_connections=1)
+                                         dict(src='string_classifier', dst='counter', based_on='pattern')
                                      ],
                                      input='string_classifier',
                                      output='counter',
@@ -952,3 +953,29 @@ StringClassifier = build_click_block('StringClassifier',
                                          reset_counts=('counter', 'reset_counts', 'identity'),
                                      )
                                      )
+StringMatcher = build_click_block('StringMatcher',
+                                     config_mapping=dict(
+                                         matcher=_no_transform('matcher'),
+                                         pattern=(['pattern'], 'to_quoted_json_escaped')),
+                                     elements=[
+                                         dict(name='string_matcher', type='StringMatcher',
+                                              config=dict(matcher="$matcher", pattern='$pattern')),
+                                         dict(name='counter', type='MultiCounter', config={}),
+                                     ],
+                                     connections=[
+                                         dict(src='string_matcher', dst='counter', src_port=0, dst_port=0),
+                                         dict(src='string_matcher', dst='counter', src_port=1, dst_port=1),
+                                     ],
+                                     input='string_matcher',
+                                     output='counter',
+                                     read_mapping=dict(
+                                         count=('counter', 'count', 'identity'),
+                                         byte_count=('counter', 'byte_count', 'identity'),
+                                         rate=('counter', 'rate', 'identity'),
+                                         byte_rate=('counter', 'byte_rate', 'identity'),
+                                     ),
+                                     write_mapping=dict(
+                                         reset_counts=('counter', 'reset_counts', 'identity'),
+                                     )
+                                     )
+

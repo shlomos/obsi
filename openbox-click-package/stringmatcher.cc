@@ -7,7 +7,8 @@
 #include <click/router.hh>
 CLICK_DECLS
 
-StringMatcher::StringMatcher() : _matches(0), _matcher(NULL)
+StringMatcher::StringMatcher() :
+        _matches(0), _matcher(NULL)
 {
 }
 
@@ -23,7 +24,7 @@ int StringMatcher::configure(Vector<String> &conf, ErrorHandler *errh)
     const char *matcher_type;
 
     if (Args(this, errh).bind(conf)
-        .read("TYPE", m_type)
+        .read_m("MATCHER", m_type)
         .consume() < 0)
       return -1;
 
@@ -50,7 +51,7 @@ int StringMatcher::configure(Vector<String> &conf, ErrorHandler *errh)
 
     for (int i = 0; i < conf.size(); ++i) {
         // All patterns should be OK so we can only have duplicates 
-        if (_matcher->add_pattern(conf[i], i)) {
+        if (_matcher->add_pattern(cp_unquote(conf[i]), i)) {
             errh->warning("Pattern #%d is a duplicate", i);
         } else {
             _patterns.push_back(conf[i]);        
@@ -67,7 +68,7 @@ int StringMatcher::configure(Vector<String> &conf, ErrorHandler *errh)
     }
 }
 
-bool StringMatcher::is_valid_patterns(Vector<String> &patterns, ErrorHandler *errh) {
+bool StringMatcher::is_valid_patterns(Vector<String> &patterns, ErrorHandler *errh) const {
     bool valid = true;
     MyMatcher *matcher;
 

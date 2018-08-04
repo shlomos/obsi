@@ -543,6 +543,13 @@ SetTimestampDelta = build_element('SetTimestampDelta',
                                   write_handlers=['reset'])
 
 StringClassifier = build_element("StringClassifier",
+                                 keywords=[KeywordArgument('matcher')],
+                                 list_argument=ListArguments('pattern'),
+                                 read_handlers=['pattern$i'],
+                                 write_handlers=['pattern$i'])
+
+StringMatcher = build_element("StringMatcher",
+                                 keywords=[KeywordArgument('matcher')],
                                  list_argument=ListArguments('pattern'),
                                  read_handlers=['pattern$i'],
                                  write_handlers=['pattern$i'])

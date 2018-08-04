@@ -627,6 +627,7 @@ SetTimestampDelta = build_open_box_block('SetTimestampDelta',
 
 StringClassifier = build_open_box_block('StringClassifier',
                                         config_fields=[
+                                            ConfigField('matcher', True, FieldType.STRING),
                                             ConfigField('pattern', True, FieldType.ARRAY),
                                         ],
                                         read_handlers=[
@@ -639,6 +640,24 @@ StringClassifier = build_open_box_block('StringClassifier',
                                             HandlerField('reset_counts', FieldType.NULL),
                                         ]
                                         )
+
+StringMatcher = build_open_box_block('StringMatcher',
+                                        config_fields=[
+                                            ConfigField('matcher', True, FieldType.STRING),
+                                            ConfigField('pattern', True, FieldType.ARRAY),
+                                        ],
+                                        read_handlers=[
+                                            HandlerField('matches', FieldType.INTEGER),
+                                            HandlerField('count', FieldType.INTEGER),
+                                            HandlerField('byte_count', FieldType.INTEGER),
+                                            HandlerField('rate', FieldType.NUMBER),
+                                            HandlerField('byte_rate', FieldType.NUMBER),
+                                        ],
+                                        write_handlers=[
+                                            HandlerField('reset_counts', FieldType.NULL),
+                                        ]
+                                        )
+
 if __name__ == '__main__':
     blocks = [block.to_dict_schema() for block in OpenBoxBlock.blocks_registry.values()]
     with open('blocks.json', 'wb') as f:

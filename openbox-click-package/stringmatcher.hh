@@ -56,7 +56,7 @@ public:
     Packet *simple_action(Packet *);
 
 private:
-    bool is_valid_patterns(Vector<String> &, ErrorHandler *); 
+    bool is_valid_patterns(Vector<String> &, ErrorHandler *) const; 
     static int write_handler(const String &, Element *e, void *thunk, ErrorHandler *errh) CLICK_COLD;
     MyMatcher *_matcher;
     Vector<String> _patterns;
