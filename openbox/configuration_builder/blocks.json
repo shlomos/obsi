@@ -117,6 +117,58 @@
     "type": "StringClassifier", 
     "configuration": [
       {
+        "name": "matcher", 
+        "required": true, 
+        "type": "string", 
+        "description": ""
+      },
+      {
+        "name": "pattern", 
+        "required": true, 
+        "type": "array", 
+        "description": ""
+      }
+    ], 
+    "read_handlers": [
+      {
+        "name": "count", 
+        "type": "integer", 
+        "description": ""
+      }, 
+      {
+        "name": "byte_count", 
+        "type": "integer", 
+        "description": ""
+      }, 
+      {
+        "name": "rate", 
+        "type": "number", 
+        "description": ""
+      }, 
+      {
+        "name": "byte_rate", 
+        "type": "number", 
+        "description": ""
+      }
+    ], 
+    "write_handlers": [
+      {
+        "name": "reset_counts", 
+        "type": "null", 
+        "description": ""
+      }
+    ]
+  },
+  {
+    "type": "StringMatcher", 
+    "configuration": [
+      {
+        "name": "matcher", 
+        "required": true, 
+        "type": "string", 
+        "description": ""
+      },
+      {
         "name": "pattern", 
         "required": true, 
         "type": "array", 

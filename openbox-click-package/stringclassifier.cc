@@ -25,7 +25,7 @@ int StringClassifier::configure(Vector<String> &conf, ErrorHandler *errh)
     const char *matcher_type;
 
     if (Args(this, errh).bind(conf)
-            .read_m("TYPE", m_type)
+            .read_m("MATCHER", m_type)
             .consume() < 0)
         return -1;
 
@@ -134,7 +134,7 @@ void StringClassifier::add_handlers() {
 }
 
 CLICK_ENDDECLS
-EXPORT_ELEMENT(StringClassifier)
 ELEMENT_REQUIRES(userlevel AhoCorasick)
 ELEMENT_REQUIRES(userlevel WuManber)
+EXPORT_ELEMENT(StringClassifier)
 ELEMENT_MT_SAFE(StringClassifier)

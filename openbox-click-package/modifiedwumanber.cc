@@ -47,7 +47,6 @@ bool WuManber::match_any(const Packet* p) {
 }
 
 int WuManber::match_first(const Packet* p) {
-	//printf("pack (%d) is: %s", p->length(), (char *)p->data());
 	return match_first((char *)p->data(), p->length());
 }
 
@@ -77,14 +76,8 @@ int match(void *id, int index, void *data)
 bool WuManber::match_any(const char *text_to_match, int length) {
 	int num_matches;
 
-	// DBG
-	printf("pack(%d)\n", length);
-	for(int i = 0; i < length; ++i)
-		printf("%c", text_to_match[i]);
-	printf("\n");
-
 	num_matches = mwmSearch((void *)_ps, (unsigned char *)text_to_match, length,
-			match, 0); 
+			match, &mwm_match); 
 	return num_matches > 0;
 }
 
