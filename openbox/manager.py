@@ -71,8 +71,10 @@ class Manager(object):
         self._keep_alive_periodic_callback = None
         self._avg_cpu = 0
         self._avg_duration = 0
+        self._last_casteling = 0
         self._supported_elements_types = []
         self._alert_messages_handler = None
+        self._castle_messages_handler = None
         self._log_messages_handler = None
 
     def start(self):
@@ -242,8 +244,19 @@ class Manager(object):
         else:
             app_log.error("Unknown process dies")
 
+    @gen.coroutine
+    def _send_castle_request(self, message):
+        interval = time.time() - self._last_casteling
+        if interval > config.Casteling.CASTELING_INTERVAL:
+            message = json_decode(message)
+            msg = messages.Castle(origin_dpid=self.obsi_id, block=message["block"])
+            received = yield self.message_sender.send_message_ignore_response(msg, url=None)
+            if not received:
+                app_log.error("Could not send Castle request to OBC")
+            self._last_casteling = time.time()
+
     def _start_push_messages_receiver(self):
-        app_log.info("Starting PushMessagesReceiver and registering Alert handling")
+        app_log.info("Starting PushMessagesReceiver and registering Alert and Castle handling")
         url = None  # this will force the message sender to use the URL based on the message type
         send_alert_messages = functools.partial(self.message_sender.send_push_messages, messages.Alert, self.obsi_id,
                                                 url)
@@ -252,6 +265,7 @@ class Manager(object):
                                                           config.PushMessages.Alert.BUFFER_TIMEOUT)
 
         self.push_messages_receiver.register_message_handler('ALERT', self._alert_messages_handler.add)
+        self.push_messages_receiver.register_message_handler('CASTLE', self._send_castle_request)
         self.push_messages_receiver.connect(config.PushMessages.SOCKET_ADDRESS,
                                             config.PushMessages.SOCKET_FAMILY,
                                             config.PushMessages.RETRY_INTERVAL)
@@ -452,6 +466,11 @@ class Manager(object):
         if self._alert_messages_handler:
             self._alert_messages_handler.buffer_size = config.PushMessages.Alert.BUFFER_SIZE
             self._alert_messages_handler.buffer_timeout = config.PushMessages.Alert.BUFFER_TIMEOUT
+
+        # update castling push messages
+        if self._castle_messages_handler:
+            self._castle_messages_handler.buffer_size = config.PushMessages.Alert.BUFFER_SIZE
+            self._castle_messages_handler.buffer_timeout = config.PushMessages.Alert.BUFFER_TIMEOUT
 
         # update log push messages
         if config.PushMessages.Log.SERVER_PORT and config.PushMessages.Log.SERVER_PORT:

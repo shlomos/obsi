@@ -203,6 +203,8 @@ class RemoveCustomModuleResponse(MessageResponse):
 class Alert(MessageRequest):
     __slots__ = ['xid', 'origin_dpid', 'messages']
 
+class Castle(MessageRequest):
+    __slots__ = ['xid', 'origin_dpid', 'block']
 
 class Log(MessageRequest):
     __slots__ = ['xid', 'origin_dpid', 'messages']

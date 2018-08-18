@@ -1232,5 +1232,51 @@
     "configuration": [], 
     "read_handlers": [], 
     "write_handlers": []
+  },
+  {
+    "type": "UtilizationMonitor", 
+    "configuration": [
+      {
+        "name": "window", 
+        "required": true, 
+        "type": "integer", 
+        "description": ""
+      }, 
+      {
+        "name": "proc_threshold", 
+        "required": true, 
+        "type": "number", 
+        "description": ""
+      }
+    ], 
+    "read_handlers": [
+      {
+        "name": "count", 
+        "type": "integer", 
+        "description": ""
+      }, 
+      {
+        "name": "time", 
+        "type": "number", 
+        "description": ""
+      }, 
+      {
+        "name": "average_time", 
+        "type": "number", 
+        "description": ""
+      }, 
+      {
+        "name": "average_window_time", 
+        "type": "number", 
+        "description": ""
+      }
+    ], 
+    "write_handlers": [ 
+      {
+        "name": "reset", 
+        "type": "null", 
+        "description": ""
+      }
+    ]
   }
 ]

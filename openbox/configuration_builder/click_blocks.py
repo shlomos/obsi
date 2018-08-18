@@ -953,6 +953,20 @@ StringClassifier = build_click_block('StringClassifier',
                                          reset_counts=('counter', 'reset_counts', 'identity'),
                                      )
                                      )
+
+UtilizationMonitor = build_click_block('UtilizationMonitor',
+        config_mapping=dict(
+            window=_no_transform('window'),
+            proc_threshold=_no_transform('proc_threshold'),
+            block=_no_transform('block')),
+        elements=[dict(name='utilization_monitor', type='UtilizationMonitor',
+                config=dict(window='$window',
+                            proc_threshold='$proc_threshold',
+                            block='$block'))],
+        input='utilization_monitor',
+        output='utilization_monitor'
+        )
+
 StringMatcher = build_click_block('StringMatcher',
                                      config_mapping=dict(
                                          matcher=_no_transform('matcher'),
@@ -978,4 +992,3 @@ StringMatcher = build_click_block('StringMatcher',
                                          reset_counts=('counter', 'reset_counts', 'identity'),
                                      )
                                      )
-

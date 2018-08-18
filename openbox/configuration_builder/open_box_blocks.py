@@ -641,6 +641,21 @@ StringClassifier = build_open_box_block('StringClassifier',
                                         ]
                                         )
 
+UtilizationMonitor = build_open_box_block('UtilizationMonitor',
+                                         config_fields=[
+                                             ConfigField('window', True, FieldType.INTEGER),
+                                             ConfigField('proc_threshold', True, FieldType.NUMBER),
+                                             ConfigField('block', True, FieldType.STRING)
+                                         ],
+                                         read_handlers=[
+                                             HandlerField('count', FieldType.INTEGER),
+                                             HandlerField('time', FieldType.NUMBER),
+                                             HandlerField('average_time', FieldType.INTEGER),
+                                             HandlerField('average_window_time', FieldType.NUMBER)
+                                         ],
+                                         write_handlers=[
+                                             HandlerField('reset', FieldType.NULL)
+                                         ])
 StringMatcher = build_open_box_block('StringMatcher',
                                         config_fields=[
                                             ConfigField('matcher', True, FieldType.STRING),

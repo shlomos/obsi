@@ -548,6 +548,15 @@ StringClassifier = build_element("StringClassifier",
                                  read_handlers=['pattern$i'],
                                  write_handlers=['pattern$i'])
 
+UtilizationMonitor = build_element('UtilizationMonitor',
+        mandatory_positional=[
+            MandatoryPositionalArgument('window'),
+            MandatoryPositionalArgument('proc_threshold'),
+            MandatoryPositionalArgument('block'),
+        ],
+        read_handlers=['count', 'time', 'average_time', 'average_window_time'],
+        write_handlers=['reset'])
+
 StringMatcher = build_element("StringMatcher",
                                  keywords=[KeywordArgument('matcher')],
                                  list_argument=ListArguments('pattern'),
