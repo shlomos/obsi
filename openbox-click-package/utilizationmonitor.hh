@@ -28,6 +28,7 @@ public:
 	uint64_t _windows_counts;
 	ErrorHandler *_ehandler; 
 	String _formated_message;
+	String _protected_block;
 
 	void emit_alert() const; 
 	void format_message(); 

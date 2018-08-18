@@ -644,7 +644,8 @@ StringClassifier = build_open_box_block('StringClassifier',
 UtilizationMonitor = build_open_box_block('UtilizationMonitor',
                                          config_fields=[
                                              ConfigField('window', True, FieldType.INTEGER),
-                                             ConfigField('proc_threshold', True, FieldType.NUMBER)
+                                             ConfigField('proc_threshold', True, FieldType.NUMBER),
+                                             ConfigField('block', True, FieldType.STRING)
                                          ],
                                          read_handlers=[
                                              HandlerField('count', FieldType.INTEGER),

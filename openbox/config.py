@@ -128,9 +128,16 @@ class PushMessages:
         BUFFER_SIZE = 1
         BUFFER_TIMEOUT = 1  # in seconds
 
+    class Castle:
+        BUFFER_SIZE = 1
+        BUFFER_TIMEOUT = 1  # in seconds
+
     class Log:
         SERVER_ADDRESS = None
         SERVER_PORT = None
         BUFFER_SIZE = 1
         BUFFER_TIMEOUT = 1
         _SERVER_CHANGED = False  # an ugly hack to help with updating
+
+class Casteling:
+    CASTELING_INTERVAL = 5

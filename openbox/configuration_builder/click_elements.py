@@ -549,9 +549,10 @@ StringClassifier = build_element("StringClassifier",
                                  write_handlers=['pattern$i'])
 
 UtilizationMonitor = build_element('UtilizationMonitor',
-        keywords=[
-            KeywordArgument('window'),
-            KeywordArgument('proc_threshold')
+        mandatory_positional=[
+            MandatoryPositionalArgument('window'),
+            MandatoryPositionalArgument('proc_threshold'),
+            MandatoryPositionalArgument('block'),
         ],
         read_handlers=['count', 'time', 'average_time', 'average_window_time'],
         write_handlers=['reset'])

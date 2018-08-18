@@ -17,18 +17,21 @@ UtilizationMonitor::~UtilizationMonitor()
 }
 
 void UtilizationMonitor::format_message() {
-    Json message = Json();
-    message.set("type", "ALERT");
-    message.set("content", "utilization: maybe should be custom message");
-    _formated_message = message.unparse();
+	Json message = Json();
+	char cont[256] = {0};
+	snprintf(cont, sizeof(cont), "{\"block\": \"%s\"}", _protected_block.c_str());
+	message.set("type", "CASTLE");
+	message.set("content", cont);
+	_formated_message = message.unparse();
 }
 
 int
 UtilizationMonitor::configure(Vector<String> &conf, ErrorHandler *errh)
 {
 	if (Args(conf, this, errh)
-			.read_p("WINDOW", _window_size)
-			.read_p("PROC_THRESHOLD", _thresh)
+			.read_mp("WINDOW", _window_size)
+			.read_mp("PROC_THRESHOLD", _thresh)
+			.read_mp("BLOCK", StringArg(), _protected_block)
 			.complete() < 0)
 		return -1;
 	_ehandler = router()->chatter_channel("openbox");
@@ -40,7 +43,7 @@ void UtilizationMonitor::emit_alert() const {
 	_ehandler->message(_formated_message.c_str());
 }
 
-void UtilizationMonitor::push(int port, Packet *p) 
+void UtilizationMonitor::push(int port, Packet *p)
 {
 	double avg_proc = 0;
 
