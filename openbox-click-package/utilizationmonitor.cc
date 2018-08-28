@@ -55,7 +55,7 @@ void UtilizationMonitor::push(int port, Packet *p)
 		if (avg_proc > _thresh * _avg_window_proc && _windows_counts > 1) {
 			emit_alert();
 		}
-		_avg_window_proc += avg_proc / _windows_counts;
+		_avg_window_proc = ((_windows_counts - 1) * _avg_window_proc + avg_proc) / _windows_counts;
 		_windows_counts++;
 		_count = 0;
 		_usec_accum = 0;
