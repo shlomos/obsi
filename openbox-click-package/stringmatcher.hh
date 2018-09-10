@@ -3,6 +3,7 @@
 #include <click/element.hh>
 #include "ahocorasickplus.hh"
 #include "modifiedwumanber.hh"
+#include "compressedahocorasick.hh"
 CLICK_DECLS
 
 /*

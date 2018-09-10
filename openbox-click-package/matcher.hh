@@ -1,8 +1,6 @@
 #ifndef CLICK_MATCHER_H_
 #define CLICK_MATCHER_H_
-#include "actypes.h"
-//#include <click/string.hh>
-//#include <click/packet.hh>
+#include "ac/actypes.h"
 
 CLICK_DECLS
 

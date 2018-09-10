@@ -21,7 +21,7 @@
 #ifndef CLICK_AHOCORASICKPLUS_H_
 #define CLICK_AHOCORASICKPLUS_H_
 #include "matcher.hh"
-#include "ahocorasick.h"
+#include "ac/ahocorasick.h"
 #include <click/string.hh>
 #include <click/packet.hh>
 CLICK_DECLS

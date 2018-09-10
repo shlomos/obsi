@@ -33,6 +33,8 @@ int StringMatcher::configure(Vector<String> &conf, ErrorHandler *errh)
         _matcher = new AhoCorasick();
     } else if (!strncmp(matcher_type, WuManber::NAME, strlen(WuManber::NAME))) {
         _matcher = new WuManber();
+    } else if (!strncmp(matcher_type, CompressedAhoCorasick::NAME, strlen(CompressedAhoCorasick::NAME))) {
+        _matcher = new CompressedAhoCorasick();
     } else {
         errh->error("Unknown matcher type %s", matcher_type);
         return -1;
@@ -76,6 +78,8 @@ bool StringMatcher::is_valid_patterns(Vector<String> &patterns, ErrorHandler *er
         matcher = new AhoCorasick();
     } else if (!strncmp(_matcher->getMatcherType(), WuManber::NAME, strlen(WuManber::NAME))) {
         matcher = new WuManber();
+    } else if (!strncmp(_matcher->getMatcherType(), CompressedAhoCorasick::NAME, strlen(CompressedAhoCorasick::NAME))) {
+        matcher = new CompressedAhoCorasick();
     } else {
         valid = false;
         errh->error("Unknown matcher type %s", _matcher->getMatcherType());
@@ -143,5 +147,6 @@ void StringMatcher::add_handlers() {
 CLICK_ENDDECLS
 ELEMENT_REQUIRES(userlevel AhoCorasick)
 ELEMENT_REQUIRES(userlevel WuManber)
+ELEMENT_REQUIRES(userlevel CompressedAhoCorasick)
 EXPORT_ELEMENT(StringMatcher)
 ELEMENT_MT_SAFE(StringMatcher)

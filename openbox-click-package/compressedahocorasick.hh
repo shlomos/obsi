@@ -1,17 +1,18 @@
-#ifndef CLICK_MODIFIEDWUMANBER_H_
-#define CLICK_MODIFIEDWUMANBER_H_
+#ifndef CLICK_COMPRESSEDAHOCORASICK_H_
+#define CLICK_COMPRESSEDAHOCORASICK_H_
 #include "matcher.hh"
-#include "mwm/mwm.h"
+#include "cac/AhoCorasick/ACBuilder.h"
+#include "cac/StateMachine/StateMachineGenerator.h"
 #include <click/string.hh>
 #include <click/packet.hh>
 CLICK_DECLS
 
-class WuManber : public MyMatcher
+class CompressedAhoCorasick : public MyMatcher
 {
 	public:
 		static const char *NAME;
-		WuManber();
-		~WuManber();
+		CompressedAhoCorasick();
+		~CompressedAhoCorasick();
 		const char *getMatcherType() const override { return NAME; }
 		EnumReturnStatus add_pattern(const String &pattern, PatternId id);
 		EnumReturnStatus add_pattern(const char pattern[], PatternId id);
@@ -26,9 +27,14 @@ class WuManber : public MyMatcher
 	private:
 		bool match_any (const char* text, int size);
 		int match_first(const char* text, int size);
-		MWM_STRUCT *_ps;
+		StateMachine *_ps;
+        ACTree *_tree;
 		bool _is_open;
+        /* fucked up shit */
+        int num_patterns;
+        /* end of fucked up shit */
+        MachineStats *_stats;
 };
 
 CLICK_ENDDECLS
-#endif /*CLICK_MODIFIEDWUMANBER_H_*/
+#endif /*CLICK_COMPRESSEDAHOCORASICK_H_*/
