@@ -82,7 +82,7 @@ bool StringMatcher::is_valid_patterns(Vector<String> &patterns, ErrorHandler *er
         matcher = new CompressedAhoCorasick();
     } else {
         valid = false;
-        errh->error("Unknown matcher type %s", _matcher->getMatcherType());
+        errh->error("Invalid matcher type %s", _matcher->getMatcherType());
         goto out;
     }
 
