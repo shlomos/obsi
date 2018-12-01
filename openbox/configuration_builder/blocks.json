@@ -1228,6 +1228,32 @@
     "write_handlers": []
   }, 
   {
+    "type": "ToHost", 
+    "configuration": [
+      {
+        "name": "devname", 
+        "required": true, 
+        "type": "string", 
+        "description": ""
+      }
+    ], 
+    "read_handlers": [], 
+    "write_handlers": []
+  }, 
+  {
+    "type": "FromHost", 
+    "configuration": [
+      {
+        "name": "devname", 
+        "required": true, 
+        "type": "string", 
+        "description": ""
+      }
+    ], 
+    "read_handlers": [], 
+    "write_handlers": []
+  }, 
+  {
     "type": "VlanDecapsulate", 
     "configuration": [], 
     "read_handlers": [], 

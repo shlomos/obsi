@@ -390,6 +390,26 @@ ToDump = build_element('ToDump',
                        read_handlers=['count', 'calls', 'drops', ],
                        write_handlers=['reset_counts']
                        )
+            
+ToHost = build_element('ToHost',
+                       mandatory_positional=[
+                           MandatoryPositionalArgument('devname')
+                       ],
+                       keywords=[
+                       ],
+                       read_handlers=['count', 'calls', 'drops', ],
+                       write_handlers=['reset_counts']
+                       )
+
+FromHost = build_element('FromHost',
+                       mandatory_positional=[
+                           MandatoryPositionalArgument('devname')
+                       ],
+                       keywords=[
+                       ],
+                       read_handlers=['count', 'calls', 'drops', ],
+                       write_handlers=['reset_counts']
+                       )
 
 PushMessage = build_element('PushMessage',
                             mandatory_positional=[

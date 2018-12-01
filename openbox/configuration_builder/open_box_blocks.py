@@ -351,6 +351,16 @@ ToDump = build_open_box_block('ToDump',
                                   ConfigField('filename', True, FieldType.STRING),
                               ])
 
+ToHost = build_open_box_block('ToHost',
+                              config_fields=[
+                                  ConfigField('devname', True, FieldType.STRING),
+                              ])
+
+FromHost = build_open_box_block('FromHost',
+                              config_fields=[
+                                  ConfigField('devname', True, FieldType.STRING),
+                              ])
+
 Log = build_open_box_block('Log',
                            config_fields=[
                                ConfigField('message', True, FieldType.STRING),

@@ -4,7 +4,7 @@ OPENBOX_CLICK_PACKAGE=$OBSI_DIR/openbox-click-package
 BUILD_DIR="/tmp/build"
 RE2_URL="https://github.com/google/re2.git"
 RE2_TAG="2015-11-01"
-CLICK_URL="https://github.com/kohler/click.git"
+CLICK_URL="https://github.com/tbarbette/fastclick.git"
 #CLICK_INSTALL_DIR=$HOME/click
 
 function install_build_utils {
@@ -33,9 +33,9 @@ function install_click {
 	echo "[+] Clonning Click"
 	cd $BUILD_DIR
 	git clone $CLICK_URL
-	cd click
+	cd fastclick
 	echo "[+] Patching Click"
-	patch elements/userlevel/controlsocket.cc $OBSI_DIR/click_controlsocket.patch
+	git apply $OBSI_DIR/click_controlsocket.patch $OBSI_DIR/fromhost_reconfigure_tun_fix.patch
 	echo "[+] Configuring Click"
  	./configure --disable-linuxmodule --disable-linux-symbols --disable-linuxmodule --disable-bsdmodule --enable-all-elements --enable-user-multithread --enable-stats=1 --enable-json --disable-test
 	echo "[+] Compiling Click"

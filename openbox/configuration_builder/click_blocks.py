@@ -414,6 +414,20 @@ ToDump = build_click_block('ToDump',
                            ],
                            input='to_dump')
 
+FromHost = build_click_block('FromHost',
+                           config_mapping=dict(devname=_no_transform('devname')),
+                           elements=[
+                               dict(name='from_host', type='FromHost', config=dict(devname='$devname')),
+                           ],
+                           output='from_host')
+
+ToHost = build_click_block('ToHost',
+                           config_mapping=dict(devname=_no_transform('devname')),
+                           elements=[
+                               dict(name='to_host', type='ToHost', config=dict(devname='$devname')),
+                           ],
+                           input='to_host')
+
 ToDevice = build_click_block('ToDevice',
                              config_mapping=dict(devname=_no_transform('devname')),
                              elements=[
