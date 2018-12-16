@@ -1,6 +1,6 @@
 #ifndef CLICK_STRINGMATCHER_HH
 #define CLICK_STRINGMATCHER_HH
-#include <click/element.hh>
+#include <click/batchelement.hh>
 #include "ahocorasickplus.hh"
 #include "modifiedwumanber.hh"
 #include "compressedahocorasick.hh"
@@ -39,7 +39,7 @@ Returns the number of matched packets.
 When written, resets the C<matches>.
 */
 
-class StringMatcher : public Element { 
+class StringMatcher : public ClassifyElement<StringMatcher> {
 public:
     StringMatcher() CLICK_COLD;
     ~StringMatcher() CLICK_COLD;
@@ -54,7 +54,10 @@ public:
     int configure(Vector<String> &, ErrorHandler *) CLICK_COLD;
     void add_handlers() CLICK_COLD;
 
+    inline int classify(Packet *p);
+#ifndef HAVE_BATCH
     Packet *simple_action(Packet *);
+#endif /* !HAVE_BATCH */
 
 private:
     bool is_valid_patterns(Vector<String> &, ErrorHandler *) const; 

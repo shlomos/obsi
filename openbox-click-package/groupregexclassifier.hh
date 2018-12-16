@@ -1,6 +1,6 @@
 #ifndef CLICK_GROUPREGEXCLASSIFIER_HH
 #define CLICK_GROUPREGEXCLASSIFIER_HH
-#include <click/element.hh>
+#include <click/batchelement.hh>
 #include "regexset.hh"
 CLICK_DECLS
 
@@ -44,7 +44,7 @@ Returns or sets the element's pattern 0. There are as many C<pattern>
 handlers as there are output ports.
 
 =a RegexClassifier*/
-class GroupRegexClassifier : public Element { 
+class GroupRegexClassifier : public ClassifyElement<GroupRegexClassifier> { 
   public:
 
     GroupRegexClassifier() CLICK_COLD;
@@ -59,6 +59,7 @@ class GroupRegexClassifier : public Element {
 
     int configure(Vector<String> &, ErrorHandler *) CLICK_COLD;
     void add_handlers() CLICK_COLD;
+    inline int classify(Packet *);
     void push(int port, Packet *);
 
   private:

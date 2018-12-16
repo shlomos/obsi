@@ -1,6 +1,6 @@
 #ifndef CLICK_CHATTERMESSAGE_HH
 #define CLICK_CHATTERMESSAGE_HH
-#include <click/element.hh>
+#include <click/batchelement.hh>
 CLICK_DECLS
 
 /*
@@ -44,7 +44,7 @@ Returns or sets the message TYPE
 Returns or sets the message text
 
 */
-class ChatterMessage : public Element { 
+class ChatterMessage : public SimpleElement<ChatterMessage> {
   public:
 
     ChatterMessage() CLICK_COLD;

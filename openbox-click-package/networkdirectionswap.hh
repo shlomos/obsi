@@ -1,6 +1,6 @@
 #ifndef CLICK_NETWORKDIRECTIONSWAP_HH
 #define CLICK_NETWORKDIRECTIONSWAP_HH
-#include <click/element.hh>
+#include <click/batchelement.hh>
 CLICK_DECLS
 
 /*
@@ -39,7 +39,7 @@ Boolean. If true UDP layer will swap direction.
 =e
  * */
 
-class NetworkDirectionSwap : public Element { 
+class NetworkDirectionSwap : public SimpleElement<NetworkDirectionSwap> {
 public:
 
   NetworkDirectionSwap() CLICK_COLD;

@@ -1,7 +1,7 @@
 // -*- mode: c++; c-basic-offset: 4 -*-
 #ifndef CLICK_MULTICOUNTER_HH
 #define CLICK_MULTICOUNTER_HH
-#include <click/element.hh>
+#include <click/batchelement.hh>
 #include <click/ewma.hh>
 CLICK_DECLS
 
@@ -52,7 +52,7 @@ Resets the counts and rates to zero.
 
 */
 
-class MultiCounter : public Element { public:
+class MultiCounter : public BatchElement { public:
 
     MultiCounter() CLICK_COLD;
     ~MultiCounter() CLICK_COLD;
@@ -64,6 +64,9 @@ class MultiCounter : public Element { public:
 
     void reset();
     void push(int port, Packet *p);
+#if HAVE_BATCH
+    void push_batch(int, PacketBatch *);
+#endif
     int initialize(ErrorHandler *) CLICK_COLD;
     void cleanup(CleanupStage stage) CLICK_COLD;
     void add_handlers() CLICK_COLD;

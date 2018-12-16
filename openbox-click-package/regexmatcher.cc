@@ -78,7 +78,7 @@ RegexMatcher::is_valid_patterns(Vector<String> &patterns, ErrorHandler *errh) co
     return valid;
 }
 
-void RegexMatcher::push(int, Packet* p) {
+inline int RegexMatcher::classify(Packet *p) {
     char* data = (char *) p->data();
     int length = p->length();
     if (_payload_only) {
@@ -94,17 +94,21 @@ void RegexMatcher::push(int, Packet* p) {
 
     if (_match_all) {
         if (_program.match_all(data, length)) {
-            output(0).push(p);
+            return 0;
         } else {
-            checked_output_push(1, p);
+            return 1;
         }
     } else {
         if (_program.match_any(data, length)) {
-            output(0).push(p);
+            return 0;
         } else {
-            checked_output_push(1, p);
+            return 1;
         }
     }
+}
+
+void RegexMatcher::push(int, Packet* p) {
+    checked_output_push(classify(p), p);
 }
 
 enum { H_PAYLOAD_ONLY, H_MATCH_ALL};

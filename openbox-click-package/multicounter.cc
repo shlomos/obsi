@@ -66,6 +66,15 @@ MultiCounter::push(int port, Packet *p)
   output(port).push(p);
 }
 
+#if HAVE_BATCH
+void
+MultiCounter::push_batch(int port, PacketBatch *batch) {
+  FOR_EACH_PACKET(batch, p)
+		update(p, port);
+	output(port).push_batch(batch);
+}
+#endif
+
 String 
 MultiCounter::format_counts(counter_t *counts, int size)
 {
