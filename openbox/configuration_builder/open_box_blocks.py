@@ -308,6 +308,22 @@ FromDevice = build_open_box_block('FromDevice',
                                       HandlerField('reset_counts', FieldType.NULL)
                                   ])
 
+FromNetmapDevice = build_open_box_block('FromNetmapDevice',
+                                  config_fields=[
+                                      ConfigField('devname', True, FieldType.STRING),
+                                      ConfigField('promisc', False, FieldType.BOOLEAN),
+                                  ],
+                                  read_handlers=[
+                                      HandlerField('count', FieldType.INTEGER),
+                                      HandlerField('byte_count', FieldType.INTEGER),
+                                      HandlerField('rate', FieldType.NUMBER),
+                                      HandlerField('byte_rate', FieldType.INTEGER),
+                                      HandlerField('drops', FieldType.STRING),
+                                  ],
+                                  write_handlers=[
+                                      HandlerField('reset_counts', FieldType.NULL)
+                                  ])
+
 FromDump = build_open_box_block('FromDump',
                                 config_fields=[
                                     ConfigField('filename', True, FieldType.STRING),
@@ -342,6 +358,11 @@ Discard = build_open_box_block('Discard',
                                ])
 
 ToDevice = build_open_box_block('ToDevice',
+                                config_fields=[
+                                    ConfigField('devname', True, FieldType.STRING),
+                                ])
+
+ToNetmapDevice = build_open_box_block('ToNetmapDevice',
                                 config_fields=[
                                     ConfigField('devname', True, FieldType.STRING),
                                 ])

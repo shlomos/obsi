@@ -5,6 +5,7 @@ BUILD_DIR="/tmp/build"
 RE2_URL="https://github.com/google/re2.git"
 RE2_TAG="2015-11-01"
 CLICK_URL="https://github.com/tbarbette/fastclick.git"
+NETMAP_URL="https://github.com/luigirizzo/netmap.git"
 #CLICK_INSTALL_DIR=$HOME/click
 
 function install_build_utils {
@@ -29,6 +30,19 @@ function install_re2 {
 	ldconfig
 }
 
+function install_netmap {
+	echo "[+] Clonning Netmap"
+	cd $BUILD_DIR
+	git clone $NETMAP_URL
+	cd netmap
+	echo "[+] Configuring Netmap"
+	./configure
+	echo "[+] Building Netmap"
+	make
+	echo "[+] Installing Netmap"
+	make install
+}
+
 function install_click {
 	echo "[+] Clonning Click"
 	cd $BUILD_DIR
@@ -37,7 +51,7 @@ function install_click {
 	echo "[+] Patching Click"
 	git apply $OBSI_DIR/click_controlsocket.patch $OBSI_DIR/fromhost_reconfigure_tun_fix.patch
 	echo "[+] Configuring Click"
- 	./configure --disable-linuxmodule --disable-linux-symbols --disable-linuxmodule --disable-bsdmodule --enable-all-elements --enable-user-multithread --enable-stats=1 --enable-json --disable-test
+	./configure --with-netmap --enable-netmap-pool --enable-multithread --disable-linuxmodule --enable-intel-cpu --enable-user-multithread --verbose --enable-select=poll --enable-poll --enable-bound-port-transfer --enable-local --enable-zerocopy --enable-batch --enable-json --disable-test --enable-stats
 	echo "[+] Compiling Click"
 	make 
 	echo "[+] Installing Click"
@@ -63,6 +77,7 @@ function install_python_dependency {
 install_build_utils
 rm -rf $BUILD_DIR
 mkdir $BUILD_DIR
+install_netmap
 install_click
 install_re2
 install_openbox_click_package

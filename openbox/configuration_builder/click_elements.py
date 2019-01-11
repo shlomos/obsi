@@ -328,6 +328,17 @@ FromDevice = build_element('FromDevice', mandatory_positional=[MandatoryPosition
                                      ],
                            read_handlers=['count', 'kernel-drops', 'encap'],
                            write_handlers=['reset_counts'])
+FromNetmapDevice = build_element('FromNetmapDevice', mandatory_positional=[MandatoryPositionalArgument('devname')],
+                           keywords=[KeywordArgument('promisc'),
+                                     KeywordArgument('burst'),
+                                     KeywordArgument('maxthreads'),
+                                     KeywordArgument('threadoffset'),
+                                     KeywordArgument('keephand'),
+                                     KeywordArgument('maxqueues'),
+                                     KeywordArgument('numa'),
+                                     ],
+                           read_handlers=['count'],
+                           write_handlers=['reset_counts'])
 Counter = build_element('Counter',
                         read_handlers=['count', 'byte_count', 'rate', 'byte_rate'],
                         write_handlers=['reset_counts'])
@@ -367,15 +378,30 @@ ToDevice = build_element('ToDevice',
                              OptionalPositionalArgument('burst')
                          ],
                          keywords=[
-                             KeywordArgument('quiet'),
-                             KeywordArgument('queue'),
-                             KeywordArgument('allow_nonexistent'),
-                             KeywordArgument('no_pad'),
+                             KeywordArgument('iqueue'),
+                             KeywordArgument('blockant'),
+                             KeywordArgument('maxthreads'),
                          ],
                          read_handlers=[
 
                          ]
                          )
+ToNetmapDevice = build_element('ToNetmapDevice',
+                         mandatory_positional=[
+                             MandatoryPositionalArgument('devname')
+                         ],
+                         optional_positional=[
+                             OptionalPositionalArgument('burst')
+                         ],
+                         keywords=[
+                             KeywordArgument('quiet'),
+                             KeywordArgument('queue'),
+                             KeywordArgument('allow_nonexistent'),
+                             KeywordArgument('no_pad'),
+                         ],
+                         read_handlers=['count', 'calls', 'drops'],
+                         write_handlers=['reset_counts'],
+                     )
 ToDump = build_element('ToDump',
                        mandatory_positional=[
                            MandatoryPositionalArgument('filename')

@@ -369,6 +369,27 @@ FromDevice = build_click_block('FromDevice',
                                                  drops=('from_device', 'kernel-drops', 'identity')),
                                write_mapping=dict(reset_counts=('counter', 'reset_counts', 'identity')))
 
+FromNetmapDevice = build_click_block('FromNetmapDevice',
+                               config_mapping=dict(devname=_no_transform('devname'),
+                                                   promisc=_no_transform('promisc')),
+                               elements=[
+                                   dict(name='from_netmap_device', type='FromNetmapDevice',
+                                        config=dict(devname='$devname', promisc='$promisc')),
+                                   dict(name='mark_ip_header', type='AutoMarkIPHeader', config={}),
+                                   dict(name='counter', type='Counter', config={})
+                               ],
+                               connections=[
+                                   dict(src='from_netmap_device', dst='mark_ip_header', src_port=0, dst_port=0),
+                                   dict(src='mark_ip_header', dst='counter', src_port=0, dst_port=0),
+                               ],
+                               output='counter',
+                               read_mapping=dict(count=('counter', 'count', 'to_int'),
+                                                 byte_count=('counter', 'byte_count', 'to_int'),
+                                                 rate=('counter', 'rate', 'to_float'),
+                                                 byte_rate=('counter', 'byte_rate', 'to_float'),
+                                                 drops=('from_netmap_device', 'kernel-drops', 'identity')),
+                               write_mapping=dict(reset_counts=('counter', 'reset_counts', 'identity')))
+
 FromDump = build_click_block('FromDump',
                              config_mapping=dict(filename=_no_transform('filename'),
                                                  timing=_no_transform('timing'),
@@ -436,6 +457,18 @@ ToDevice = build_click_block('ToDevice',
                              ],
                              connections=[
                                  dict(src='queue', dst='to_device', src_port=0, dst_port=0),
+                             ],
+                             input='queue'
+                             )
+
+ToNetmapDevice = build_click_block('ToNetmapDevice',
+                             config_mapping=dict(devname=_no_transform('devname')),
+                             elements=[
+                                 dict(name='queue', type='Queue', config={}),
+                                 dict(name='to_netmap_device', type='ToNetmapDevice', config=dict(devname='$devname'))
+                             ],
+                             connections=[
+                                 dict(src='queue', dst='to_netmap_device', src_port=0, dst_port=0),
                              ],
                              input='queue'
                              )
