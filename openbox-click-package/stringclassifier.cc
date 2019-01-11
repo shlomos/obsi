@@ -112,14 +112,17 @@ out:
     return valid;
 }
 
-void 
-StringClassifier::push(int, Packet *p) {
+inline int
+StringClassifier::classify(Packet *p) {
     int output = _matcher->match_first(p);
-    if (output == -1) {
-        output = _patterns.size();
-    }
-    checked_output_push(output, p);
+
+    return output == -1 ? _patterns.size() : output;
 }
+#ifndef HAVE_BATCH
+Packet* StringClassifier::push(Packet *p) {
+    checked_output_push(classify(p), p);
+}
+#endif /* !HAVE_BATCH */
 
 int
 StringClassifier::write_handler(const String &, Element *e, void *, ErrorHandler *) {

@@ -43,8 +43,7 @@ void UtilizationMonitor::emit_alert() const {
 	_ehandler->message(_formated_message.c_str());
 }
 
-void UtilizationMonitor::push(int port, Packet *p)
-{
+void UtilizationMonitor::analyze(Packet *p) {
 	double avg_proc = 0;
 
 	_usec_accum += (Timestamp::now() - p->timestamp_anno()).doubleval();
@@ -61,11 +60,23 @@ void UtilizationMonitor::push(int port, Packet *p)
 		_usec_accum = 0;
 	}
 
+}
+
+void UtilizationMonitor::push(int port, Packet *p)
+{
+	analyze(p);
 	output(port).push(p);
 }
 
-String
-UtilizationMonitor::read_handler(Element *e, void *thunk)
+#if HAVE_BATCH
+void UtilizationMonitor::push_batch(int port, PacketBatch *batch) {
+	FOR_EACH_PACKET(batch, p)
+		analyze(p);
+	output(port).push_batch(batch);
+}
+#endif
+
+String UtilizationMonitor::read_handler(Element *e, void *thunk)
 {
 	UtilizationMonitor *ta = static_cast<UtilizationMonitor *>(e);
 	int which = reinterpret_cast<intptr_t>(thunk);

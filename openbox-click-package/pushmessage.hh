@@ -1,6 +1,6 @@
 #ifndef CLICK_PUSHMESSAGE_HH
 #define CLICK_PUSHMESSAGE_HH
-#include <click/element.hh>
+#include <click/batchelement.hh>
 CLICK_DECLS
 
 /*
@@ -46,7 +46,7 @@ For example,
   ...->PushMessage(LOG, "This is a log message: %s", ATTACH_PACKET true, PACKET_SIZE 20)->...
 
 */
-class PushMessage : public Element { 
+class PushMessage : public SimpleElement<PushMessage> {
   public:
 
     PushMessage() CLICK_COLD;

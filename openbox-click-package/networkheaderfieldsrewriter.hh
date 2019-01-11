@@ -1,6 +1,6 @@
 #ifndef CLICK_NETWORKHEADERFIELDSREWRITER_HH
 #define CLICK_NETWORKHEADERFIELDSREWRITER_HH
-#include <click/element.hh>
+#include <click/batchelement.hh>
 #include <click/etheraddress.hh>
 CLICK_DECLS
 
@@ -70,7 +70,7 @@ UDP destination port (works over IPv6 as well)
 =back
  * */
 
-class NetworkHeaderFieldsRewriter : public Element { 
+class NetworkHeaderFieldsRewriter : public SimpleElement<NetworkHeaderFieldsRewriter> {
 public:
 
   NetworkHeaderFieldsRewriter() CLICK_COLD;

@@ -1,9 +1,9 @@
 #ifndef CLICK_UTILIZATIONMONITOR_HH
 #define CLICK_UTILIZaTIONMONITOR_HH
-#include <click/element.hh>
+#include <click/batchelement.hh>
 CLICK_DECLS
 
-class UtilizationMonitor : public Element {
+class UtilizationMonitor : public BatchElement {
 
 public:
 	UtilizationMonitor() CLICK_COLD;
@@ -18,6 +18,9 @@ public:
 	void add_handlers() CLICK_COLD;
 
 	void push(int, Packet *);
+#if HAVE_BATCH
+	void push_batch(int, PacketBatch *);
+#endif
 
  private:
 	double _usec_accum;
@@ -31,7 +34,8 @@ public:
 	String _protected_block;
 
 	void emit_alert() const; 
-	void format_message(); 
+	void format_message();
+	void analyze(Packet *);
 	static String read_handler(Element *, void *) CLICK_COLD;
 	static int reset_handler(const String &, Element *, void *, ErrorHandler *);
 

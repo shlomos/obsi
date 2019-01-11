@@ -1,6 +1,6 @@
 #ifndef CLICK_REGEXMATCHER_HH
 #define CLICK_REGEXMATCHER_HH
-#include <click/element.hh>
+#include <click/batchelement.hh>
 #include "regexset.hh"
 CLICK_DECLS
 
@@ -52,7 +52,7 @@ Returns or sets the element's pattern 0. There are as many C<pattern>
 handlers as there are output ports.
 
 =a RegexClassifier */
-class RegexMatcher : public Element { 
+class RegexMatcher : public ClassifyElement<RegexMatcher> {
   public:
 
     RegexMatcher() CLICK_COLD;
@@ -66,6 +66,7 @@ class RegexMatcher : public Element {
     int configure(Vector<String> &, ErrorHandler *) CLICK_COLD;
     void add_handlers() CLICK_COLD;
     void push(int port, Packet* p);
+    inline int classify(Packet *);
 
   private:
     bool is_valid_patterns(Vector<String> &patterns, ErrorHandler *errh) const;

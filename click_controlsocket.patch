@@ -1,5 +1,5 @@
---- /home/dev/workspace/click/elements/userlevel/controlsocket.cc	2016-01-26 16:47:49.630453790 +0200
-+++ controlsocket.cc	2016-01-26 16:46:50.554456206 +0200
+--- a/elements/userlevel/controlsocket.cc	2016-01-26 16:47:49.630453790 +0200
++++ b/elements/userlevel/controlsocket.cc	2016-01-26 16:46:50.554456206 +0200
 @@ -547,6 +547,10 @@
    if (_read_only)
      return conn.message(CSERR_PERMISSION, "Permission denied for '" + handlername + "'");

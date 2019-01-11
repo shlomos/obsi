@@ -1,6 +1,6 @@
 #ifndef CLICK_AUTOMARKIPHeader_HH
 #define CLICK_AUTOMARKIPHeader_HH
-#include <click/element.hh>
+#include <click/batchelement.hh>
 CLICK_DECLS
 
 /*
@@ -18,7 +18,7 @@ CLICK_DECLS
  *
  * =a CheckIPHeader, CheckIPHeader2, StripIPHeader, MarkIPHeader */
 
-class AutoMarkIPHeader : public Element {
+class AutoMarkIPHeader : public SimpleElement<AutoMarkIPHeader> {
 
  public:
 

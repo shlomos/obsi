@@ -95,11 +95,16 @@ GroupRegexClassifier::add_handlers() {
     }
 }
 
-void 
-GroupRegexClassifier::push(int, Packet* p) {
+inline int GroupRegexClassifier::classify(Packet *p){
     char* data = (char *) p->data();
     int length = p->length();
-    checked_output_push(_program.match_group(data, length, _patterns_group_number, _groups_count), p);
+
+    return _program.match_group(data, length, _patterns_group_number, _groups_count);
+}
+
+void 
+GroupRegexClassifier::push(int, Packet* p) {
+    checked_output_push(classify(p), p);
 }
 
 CLICK_ENDDECLS

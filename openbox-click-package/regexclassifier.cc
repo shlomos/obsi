@@ -126,8 +126,8 @@ RegexClassifier::add_handlers() {
     add_write_handler("payload_only", write_handler, H_PAYLOAD_ONLY);
 }
 
-void 
-RegexClassifier::push(int, Packet* p) {
+inline int
+RegexClassifier::classify(Packet *p) {
     char* data = (char *) p->data();
     int length = p->length();
     if (_payload_only) {
@@ -140,7 +140,13 @@ RegexClassifier::push(int, Packet* p) {
             length = p->transport_length();
         }
     }
-    checked_output_push(_program->match_first(data, length), p);
+
+    return _program->match_first(data, length);
+}
+
+void
+RegexClassifier::push(int, Packet* p) {
+    checked_output_push(classify(p), p);
 }
 
 CLICK_ENDDECLS

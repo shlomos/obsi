@@ -115,22 +115,27 @@ out:
     return valid;
 }
 
-Packet* StringMatcher::simple_action(Packet *p) {
+inline int
+StringMatcher::classify(Packet *p) {
     if (_matcher->match_any(p)) {
         _matches++;
-
-        // push to port 1 if anything is connected
-        if (noutputs() == 2) {
-            output(1).push(p);
-        } else {
-            p->kill();
-        }
-        return 0;
-    } else {
-        // push to port 0 
-        return p; 
+        return 1;
     }
+    return 0;
 }
+#ifndef HAVE_BATCH
+Packet* StringMatcher::simple_action(Packet *p) {
+    int port = classify(p);
+    if (port > noutputs() - 1 || port < 0){
+        p->kill();
+        goto done;
+    }
+    output(port).push(p);
+
+done:
+    return 0;
+}
+#endif /* !HAVE_BATCH */
 
 int
 StringMatcher::write_handler(const String &, Element *e, void *, ErrorHandler *) {

@@ -67,19 +67,24 @@ class Engine:
     PUSH_MESSAGES_SOCKET_ENDPOINT = 10002
     PUSH_MESSAGES_CHANNEL = 'openbox'
     NTHREADS = 2
+    NETMAP = True
+    IFACE = "eth1"
+    NETMAP_PLACEHOLDER = "" if not NETMAP else "FromNetmapDevice(netmap:{iface}) -> discard;".format(iface=IFACE)
     REQUIREMENTS = ['openbox']
     BASE_EMPTY_CONFIG = r'''{requirements}
 ChatterSocket("{push_type}", {push_endpoint}, RETRIES 3, RETRY_WARNINGS false, CHANNEL {channel});
 ControlSocket("{control_type}", {control_endpoint}, RETRIES 3, RETRY_WARNINGS false);
 alert::ChatterMessage("ALERT", "{test_alert_message}", CHANNEL {channel});
 log::ChatterMessage("LOG", "{test_log_message}", CHANNEL {channel});
-timed_source::TimedSource(10, "base");
 discard::Discard();
+{netmap_placeholder}
+timed_source::TimedSource(10, "base");
 timed_source -> alert -> log -> discard;'''.format(
         requirements='\n'.join('require(package "%s")' % package for package in REQUIREMENTS),
         push_type=PUSH_MESSAGES_SOCKET_TYPE,
         push_endpoint=PUSH_MESSAGES_SOCKET_ENDPOINT,
         channel=PUSH_MESSAGES_CHANNEL,
+        netmap_placeholder=NETMAP_PLACEHOLDER,
         control_type=CONTROL_SOCKET_TYPE,
         control_endpoint=CONTROL_SOCKET_ENDPOINT,
         test_alert_message=r'{\"message\": \"This is a test alert\",'

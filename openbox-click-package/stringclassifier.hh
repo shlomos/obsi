@@ -1,6 +1,6 @@
 #ifndef CLICK_STRINGCLASSIFIER_HH
 #define CLICK_STRINGCLASSIFIER_HH
-#include <click/element.hh>
+#include <click/batchelement.hh>
 #include "ahocorasickplus.hh"
 #include "modifiedwumanber.hh"
 CLICK_DECLS
@@ -48,7 +48,7 @@ handlers as there are output ports.
 =a Classifier, IPFilter, CheckIPHeader, MarkIPHeader, CheckIPHeader2,
 tcpdump(1) */
 
-class StringClassifier : public Element { 
+class StringClassifier : public ClassifyElement<StringClassifier> {
 public:
 
     StringClassifier() CLICK_COLD;
@@ -63,7 +63,10 @@ public:
 
     int configure(Vector<String> &, ErrorHandler *) CLICK_COLD;
     void add_handlers() CLICK_COLD;
-    void push(int port, Packet *);
+    inline int classify(Packet *p);
+#ifndef HAVE_BATCH
+    void push(int, Packet *);
+#endif /* !HAVE_BATCH */
 
 private:
     bool is_valid_patterns(Vector<String> &patterns, ErrorHandler *errh) const;
