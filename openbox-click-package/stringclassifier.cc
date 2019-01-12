@@ -119,7 +119,7 @@ StringClassifier::classify(Packet *p) {
     return output == -1 ? _patterns.size() : output;
 }
 #ifndef HAVE_BATCH
-Packet* StringClassifier::push(Packet *p) {
+void StringClassifier::push(int port, Packet *p) {
     checked_output_push(classify(p), p);
 }
 #endif /* !HAVE_BATCH */

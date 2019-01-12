@@ -269,7 +269,7 @@ index c4686c7..20a95c9 100644
 +    static bool _printed_write_err = false;
 +    WritablePacket *q = NULL;
 +
-+    FOR_EACH_PACKET(b,p) {
++    FOR_EACH_PACKET_SAFE(b,p) {
 +        if (p->length() < sizeof(click_ether)) {
 +            click_chatter("ToHost: packet too small");
 +            p->kill();

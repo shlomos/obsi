@@ -68,7 +68,7 @@ class Engine:
     PUSH_MESSAGES_CHANNEL = 'openbox'
     NTHREADS = 2
     NETMAP = True
-    IFACE = "eth1"
+    IFACE = "eth2v"
     NETMAP_PLACEHOLDER = "" if not NETMAP else "FromNetmapDevice(netmap:{iface}) -> discard;".format(iface=IFACE)
     REQUIREMENTS = ['openbox']
     BASE_EMPTY_CONFIG = r'''{requirements}
