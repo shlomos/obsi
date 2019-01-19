@@ -1,6 +1,8 @@
---- a/elements/userlevel/controlsocket.cc	2016-01-26 16:47:49.630453790 +0200
-+++ b/elements/userlevel/controlsocket.cc	2016-01-26 16:46:50.554456206 +0200
-@@ -547,6 +547,10 @@
+diff --git a/elements/userlevel/controlsocket.cc b/elements/userlevel/controlsocket.cc
+index 6d31901..24779b0 100644
+--- a/elements/userlevel/controlsocket.cc
++++ b/elements/userlevel/controlsocket.cc
+@@ -547,6 +547,10 @@ ControlSocket::write_command(connection &conn, const String &handlername, String
    if (_read_only)
      return conn.message(CSERR_PERMISSION, "Permission denied for '" + handlername + "'");
  
