@@ -1,14 +1,15 @@
+#include <float.h>
 #include <click/config.h>
-#include "utilizationmonitor.hh"
 #include <click/args.hh>
 #include <click/glue.hh>
 #include <click/error.hh>
 #include <click/router.hh>
 #include <elements/json/json.hh>
+#include "utilizationmonitor.hh"
 CLICK_DECLS
 
 UtilizationMonitor::UtilizationMonitor():
-		_usec_accum(0), _count(0), _windows_counts(1), _avg_window_proc(0)
+		_usec_accum(0), _count(0), _windows_counts(1), _avg_window_proc(0), _last_check(DBL_MAX)
 {
 }
 
@@ -39,6 +40,29 @@ UtilizationMonitor::configure(Vector<String> &conf, ErrorHandler *errh)
 	return 0;
 }
 
+UtilizationMonitor *
+UtilizationMonitor::hotswap_element() const
+{
+	if (Element *e = Element::hotswap_element())
+		if (UtilizationMonitor *um = static_cast<UtilizationMonitor *>(e->cast("UtilizationMonitor")))
+			if (um->_protected_block == _protected_block)
+				return um;
+	return 0;
+}
+
+void
+UtilizationMonitor::take_state(Element *e, ErrorHandler *errh)
+{
+	(void)errh;
+	UtilizationMonitor *o = static_cast<UtilizationMonitor *>(e); // checked by hotswap_element()
+
+	_usec_accum = 0;
+	_count = 0;
+	_windows_counts = o->_windows_counts;
+	_avg_window_proc = o->_avg_window_proc;
+	_last_check = DBL_MAX;
+}
+
 void UtilizationMonitor::emit_alert() const {
 	_ehandler->message(_formated_message.c_str());
 }
@@ -48,14 +72,17 @@ void UtilizationMonitor::analyze(Packet *p) {
 
 	_usec_accum += (Timestamp::now() - p->timestamp_anno()).doubleval();
 	_count++;
+	_last_check = Timestamp::now().doubleval();
 
-	if (_count >= _window_size) {
+	if (_count >= _window_size || Timestamp::now().doubleval() - _last_check > 5.0) {
 		avg_proc = _usec_accum / _count;
-		if (avg_proc > _thresh * _avg_window_proc && _windows_counts > 1) {
+		printf("avg_proc = %f, _thresh * _avg_window_proc = %f, _windows_counts=%d\n", avg_proc, _thresh * _avg_window_proc, _windows_counts);
+		if ((avg_proc > _thresh * _avg_window_proc) && _windows_counts > 2) {
 			emit_alert();
+		} else {
+			_avg_window_proc = ((_windows_counts - 1) * _avg_window_proc + avg_proc) / _windows_counts;
+			_windows_counts++;
 		}
-		_avg_window_proc = ((_windows_counts - 1) * _avg_window_proc + avg_proc) / _windows_counts;
-		_windows_counts++;
 		_count = 0;
 		_usec_accum = 0;
 	}

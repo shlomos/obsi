@@ -82,3 +82,6 @@ install_click
 install_re2
 install_openbox_click_package
 install_python_dependency
+
+# this command is needed to disable NIC offloading
+# sudo ethtool -K eth1 tx off rx off gso off tso off gro off lro off

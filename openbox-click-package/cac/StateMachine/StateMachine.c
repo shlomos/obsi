@@ -286,7 +286,6 @@ int matchIterative(StateMachine *machine, char *input, int length, int *idx, Sta
 
 		s = nextState;
 	}
-
 	return res;
 }
 
@@ -361,6 +360,7 @@ int matchIterativeSimple(StateMachine *machine, char *input, int length, int *id
 
 int match(StateMachine *machine, const char *input, int length, int verbose, MachineStats *stats, int init_idx, int drop) {
 	int idx = 0;
+	int res = 0;
 
 	if (init_idx > 0) {
 		idx = init_idx;
@@ -368,10 +368,11 @@ int match(StateMachine *machine, const char *input, int length, int verbose, Mac
 
 	//return matchIterativeSimple(machine, input, length, &idx, machine->states->table[0], verbose, stats);
 	if (machine->isSimple) {
-		return matchIterativeSimple(machine, input, length, &idx, machine->states->table[0], verbose, stats);
+		res = matchIterativeSimple(machine, input, length, &idx, machine->states->table[0], verbose, stats);
 	} else {
-		return matchIterative(machine, input, length, &idx, machine->states->table[0], verbose, stats, drop);
+		res = matchIterative(machine, input, length, &idx, machine->states->table[0], verbose, stats, drop);
 	}
+	return res;
 }
 
 void compressStateTable(StateMachine *machine) {

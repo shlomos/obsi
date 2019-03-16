@@ -17,6 +17,9 @@ public:
 	int configure(Vector<String> &, ErrorHandler *) CLICK_COLD;
 	void add_handlers() CLICK_COLD;
 
+	UtilizationMonitor *hotswap_element() const;
+	void take_state(Element *e, ErrorHandler *errh);
+
 	void push(int, Packet *);
 #if HAVE_BATCH
 	void push_batch(int, PacketBatch *);
@@ -27,6 +30,7 @@ public:
 	double _avg_window_proc;
 	double _thresh;
 	uint64_t _window_size;
+	double _last_check;
 	uint64_t _count;
 	uint64_t _windows_counts;
 	ErrorHandler *_ehandler; 

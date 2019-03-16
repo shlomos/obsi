@@ -5,6 +5,9 @@
 #include <click/args.hh>
 #include <click/confparse.hh>
 #include <click/router.hh>
+
+#include <execinfo.h>
+#include <stdio.h>
 CLICK_DECLS
 
 StringMatcher::StringMatcher() :
@@ -22,6 +25,7 @@ int StringMatcher::configure(Vector<String> &conf, ErrorHandler *errh)
 {
     String m_type; 
     const char *matcher_type;
+    char bla[4096] = {0};
 
     if (Args(this, errh).bind(conf)
         .read_m("MATCHER", m_type)
@@ -42,6 +46,7 @@ int StringMatcher::configure(Vector<String> &conf, ErrorHandler *errh)
 
     // This check will prevent us from doing any changes to the state if there is an error
     if (!is_valid_patterns(conf, errh)) {
+        printf("invalid patterns!\n");
         return -1; 
     }
 
@@ -52,7 +57,10 @@ int StringMatcher::configure(Vector<String> &conf, ErrorHandler *errh)
     }
 
     for (int i = 0; i < conf.size(); ++i) {
-        // All patterns should be OK so we can only have duplicates 
+        // All patterns should be OK so we can only have duplicates
+        //printf("patt %d = -- %s -- \n", i, cp_unquote(conf[i]).c_str());
+        //snprintf(bla, 4096, "echo \"patt %d = -- %s -- \" >> /tmp/ga_out.txt", i, cp_unquote(conf[i]).c_str());
+        //system(bla);
         if (_matcher->add_pattern(cp_unquote(conf[i]), i)) {
             errh->warning("Pattern #%d is a duplicate", i);
         } else {
@@ -123,9 +131,11 @@ StringMatcher::classify(Packet *p) {
     }
     return 0;
 }
-#ifndef HAVE_BATCH
+
+
 Packet* StringMatcher::simple_action(Packet *p) {
     int port = classify(p);
+
     if (port > noutputs() - 1 || port < 0){
         p->kill();
         goto done;
@@ -135,7 +145,31 @@ Packet* StringMatcher::simple_action(Packet *p) {
 done:
     return 0;
 }
-#endif /* !HAVE_BATCH */
+
+//#if HAVE_BATCH
+// void StringMatcher::push_batch(int, PacketBatch *batch) {
+//       FOR_EACH_PACKET_SAFE(batch, p) {
+//             durak(p, 'a');
+//       }
+// }
+//#endif /* HAVE_BATCH */
+
+// void StringMatcher::push(int, Packet *p) {
+//     void* callstack[128];
+//      int i, frames = backtrace(callstack, 128);
+//      char** strs = backtrace_symbols(callstack, frames);
+//      for (i = 0; i < frames; ++i) {
+//          printf("%s\n", strs[i]);
+//      }
+//      free(strs);
+//     int port = classify(p);
+//     printf("sa: %d\n", port);
+//     if (port > noutputs() - 1 || port < 0){
+//         p->kill();
+//         return;
+//     }
+//     output(port).push(p);
+// }
 
 int
 StringMatcher::write_handler(const String &, Element *e, void *, ErrorHandler *) {

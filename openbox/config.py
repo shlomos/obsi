@@ -67,9 +67,9 @@ class Engine:
     PUSH_MESSAGES_SOCKET_ENDPOINT = 10002
     PUSH_MESSAGES_CHANNEL = 'openbox'
     NTHREADS = 2
-    NETMAP = True
-    IFACE = "eth2v"
-    NETMAP_PLACEHOLDER = "" if not NETMAP else "FromNetmapDevice(netmap:{iface}) -> discard;".format(iface=IFACE)
+    NETMAP = False
+    IFACE = "eth2"
+    NETMAP_PLACEHOLDER = "" if not NETMAP else "NetmapInfo(EXTRA_BUFFER 65536);FromNetmapDevice(netmap:{iface}) -> discard;".format(iface=IFACE)
     REQUIREMENTS = ['openbox']
     BASE_EMPTY_CONFIG = r'''{requirements}
 ChatterSocket("{push_type}", {push_endpoint}, RETRIES 3, RETRY_WARNINGS false, CHANNEL {channel});

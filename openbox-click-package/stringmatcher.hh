@@ -55,9 +55,12 @@ public:
     void add_handlers() CLICK_COLD;
 
     inline int classify(Packet *p);
-#ifndef HAVE_BATCH
-    Packet *simple_action(Packet *);
-#endif /* !HAVE_BATCH */
+    Packet* simple_action(Packet *p);
+//#if HAVE_BATCH
+    //void push_batch(int, PacketBatch *batch);
+//#endif /* HAVE_BATCH */
+    //void push(int, Packet *p);
+
 
 private:
     bool is_valid_patterns(Vector<String> &, ErrorHandler *) const; 

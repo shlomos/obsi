@@ -464,13 +464,9 @@ ToDevice = build_click_block('ToDevice',
 ToNetmapDevice = build_click_block('ToNetmapDevice',
                              config_mapping=dict(devname=_no_transform('devname')),
                              elements=[
-                                 dict(name='queue', type='Queue', config={}),
                                  dict(name='to_netmap_device', type='ToNetmapDevice', config=dict(devname='$devname'))
                              ],
-                             connections=[
-                                 dict(src='queue', dst='to_netmap_device', src_port=0, dst_port=0),
-                             ],
-                             input='queue'
+                             input='to_netmap_device'
                              )
 
 Log = build_click_block('Log',

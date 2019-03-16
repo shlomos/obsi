@@ -15,6 +15,7 @@ from tornado import gen
 from tornado.queues import Queue
 from tornado.httpclient import AsyncHTTPClient, HTTPError
 
+AsyncHTTPClient.configure(None, max_clients=1000)
 
 class MessageSender(object):
     def __init__(self):
