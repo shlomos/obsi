@@ -16,31 +16,39 @@ CompressedAhoCorasick::CompressedAhoCorasick()
 	_stats->totalFailures = 0;
 	_stats->totalGotos = 0;
 	_is_open = false;
-    num_patterns = 0;
-    _ps = NULL;
+	num_patterns = 0;
+	_ps = NULL;
 }
 
 CompressedAhoCorasick::~CompressedAhoCorasick()
 {
-    if (_ps) {
-	    destroyStateMachine(_ps);
-    }
-    _ps = NULL;
+	if (_ps) {
+		destroyStateMachine(_ps);
+	}
+	_ps = NULL;
 }
 
 MyMatcher::EnumReturnStatus
 CompressedAhoCorasick::add_pattern(const String &pattern, PatternId id)
 {
-    num_patterns++;
+	num_patterns++;
 	return (MyMatcher::EnumReturnStatus)acAddPatternToTree(
 			_tree, (unsigned char *)pattern.c_str(), pattern.length());
 }
 
-MyMatcher::EnumReturnStatus 
+MyMatcher::EnumReturnStatus
 CompressedAhoCorasick::add_pattern(const char pattern[], PatternId id)
 {
 	String tmpString = pattern;
 	return add_pattern(tmpString, id);
+}
+
+MyMatcher::EnumReturnStatus
+CompressedAhoCorasick::add_pattern(const char *pattern, size_t len, PatternId id)
+{
+	num_patterns++;
+	return (MyMatcher::EnumReturnStatus)acAddPatternToTree(
+			_tree, (unsigned char *)pattern, len);
 }
 
 bool CompressedAhoCorasick::match_any(const String& text) {
@@ -61,50 +69,50 @@ int CompressedAhoCorasick::match_first(const String& text) {
 
 void CompressedAhoCorasick::finalize()
 {
-    /*
-     * Fucked up shit, i'm too lazy to fix now... 
-     * However it cost me a whole day and a brain damage to find out it happens, 
-     * so I write it here so you don't have to.
-     */
-    if (num_patterns < 2) {
-        fprintf(stderr, "This matcher does not work with only one pattern...\n");
-        exit(-1);
-    }
-    /* end of fucked up shit */
+	/*
+	 * Fucked up shit, i'm too lazy to fix now... 
+	 * However it cost me a whole day and a brain damage to find out it happens, 
+	 * so I write it here so you don't have to.
+	 */
+	if (num_patterns < 2) {
+		fprintf(stderr, "This matcher does not work with only one pattern...\n");
+		exit(-1);
+	}
+	/* end of fucked up shit */
 	_ps = createStateMachine(_tree, DEFAULT_MAX_GOTOS_LE, DEFAULT_MAX_GOTOS_BM, 0);
-    free(_tree);
-    _tree = NULL;
+	free(_tree);
+	_tree = NULL;
 	_is_open = true;
 }
 
 bool CompressedAhoCorasick::match_any(const char *text_to_match, int length) {
 	int num_matches;
-    char *text_cpy = (char *)calloc(length, sizeof(char));
+	char *text_cpy = (char *)calloc(length, sizeof(char));
 
-    memcpy(text_cpy, text_to_match, length);
-    num_matches = match(_ps, text_cpy, length, 0, _stats, 0, 0);
-    free(text_cpy);
+	memcpy(text_cpy, text_to_match, length);
+	num_matches = match(_ps, text_cpy, length, 0, _stats, 0, 0);
+	free(text_cpy);
 	return num_matches > 0;
 }
 
 int CompressedAhoCorasick::match_first(const char *text_to_match, int length) {
-    /* Not implemented */
-    return -1;
+	/* Not implemented */
+	return -1;
 }
 
 void CompressedAhoCorasick::reset() {
-    if (_ps) {
-	    destroyStateMachine(_ps);
-    }
+	if (_ps) {
+		destroyStateMachine(_ps);
+	}
 	_is_open = false;
 	_ps = NULL;
-    free(_tree);
-    free(_stats);
-    _tree = (ACTree *)calloc(1, sizeof(ACTree));
-    _stats = (MachineStats *)calloc(1, sizeof(MachineStats));
+	free(_tree);
+	free(_stats);
+	_tree = (ACTree *)calloc(1, sizeof(ACTree));
+	_stats = (MachineStats *)calloc(1, sizeof(MachineStats));
 	_stats->totalFailures = 0;
 	_stats->totalGotos = 0;
-    num_patterns = 0;
+	num_patterns = 0;
 }
 
 bool CompressedAhoCorasick::is_open() {

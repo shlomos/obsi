@@ -1013,10 +1013,11 @@ UtilizationMonitor = build_click_block('UtilizationMonitor',
 StringMatcher = build_click_block('StringMatcher',
                                      config_mapping=dict(
                                          matcher=_no_transform('matcher'),
+                                         hex=_no_transform('hex'),
                                          pattern=(['pattern'], 'to_quoted_json_escaped')),
                                      elements=[
                                          dict(name='string_matcher', type='StringMatcher',
-                                              config=dict(matcher="$matcher", pattern='$pattern')),
+                                              config=dict(matcher="$matcher", hex="$hex", pattern='$pattern')),
                                          dict(name='counter', type='MultiCounter', config={}),
                                      ],
                                      connections=[

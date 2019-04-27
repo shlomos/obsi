@@ -40,6 +40,7 @@ class AhoCorasick : public MyMatcher
 		const char *getMatcherType() const override { return NAME; }
 		EnumReturnStatus add_pattern(const String &pattern, PatternId id);
 		EnumReturnStatus add_pattern(const char pattern[], PatternId id);
+		EnumReturnStatus add_pattern(const char *pattern, size_t len, PatternId id);
 		void finalize();
 		void reset(); 
 		bool match_any (const String& text);

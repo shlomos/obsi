@@ -31,11 +31,19 @@ WuManber::add_pattern (const String &pattern, PatternId id)
 
 }
 
-MyMatcher::EnumReturnStatus 
+MyMatcher::EnumReturnStatus
 WuManber::add_pattern(const char pattern[], PatternId id)
 {
 	String tmpString = pattern;
 	return add_pattern(tmpString, id);
+}
+
+MyMatcher::EnumReturnStatus
+WuManber::add_pattern(const char *pattern, size_t len, PatternId id)
+{
+    (MyMatcher::EnumReturnStatus)mwmAddPatternEx(
+			_ps, (unsigned char *)pattern, len,
+			1, 0, 0, (void *)((intptr_t)id), 3000);
 }
 
 bool WuManber::match_any(const String& text) {

@@ -18,7 +18,7 @@ extern "C" {
 
 void acBuildTree(ACTree *tree, const char *path, int avoidFailToLeaves, int mixIDs);
 void acDestroyTreeNodes(ACTree *tree);
-Node *acGetNextNode(Node *node, char c);
+Node *acGetNextNode(Node *node, unsigned char c);
 void acPrintTree(ACTree *tree);
 int acAddPatternToTree(ACTree *tree, unsigned char *pattern, unsigned int length);
 void acFinalize(ACTree *tree, int avoidFailToLeaves, int mixID);

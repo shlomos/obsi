@@ -690,6 +690,7 @@ UtilizationMonitor = build_open_box_block('UtilizationMonitor',
 StringMatcher = build_open_box_block('StringMatcher',
                                         config_fields=[
                                             ConfigField('matcher', True, FieldType.STRING),
+                                            ConfigField('hex', True, FieldType.BOOLEAN),
                                             ConfigField('pattern', True, FieldType.ARRAY),
                                         ],
                                         read_handlers=[

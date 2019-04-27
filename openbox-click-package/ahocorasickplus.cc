@@ -36,48 +36,83 @@ AhoCorasick::~AhoCorasick()
 	delete _text;
 }
 
-MyMatcher::EnumReturnStatus 
+MyMatcher::EnumReturnStatus
 AhoCorasick::add_pattern(const String &pattern, PatternId id)
 {
 	// Adds zero-terminating string
-	
+
 	EnumReturnStatus rv = MATCHER_ERROR_GENERAL;
-	
+
 	AC_PATTERN_t patt;
 	patt.ptext.astring = (AC_ALPHABET_t*) pattern.c_str();
 	patt.ptext.length = pattern.length();
 	patt.id.u.number = id;
 	patt.rtext.astring = NULL;
 	patt.rtext.length = 0;
-	
+
 	AC_STATUS_t status = ac_trie_add (_automata, &patt, 0);
-	
+
 	switch (status)
 	{
-		case ACERR_SUCCESS: 
-			rv = MATCHER_SUCCESS; 
+		case ACERR_SUCCESS:
+			rv = MATCHER_SUCCESS;
 			break;
 		case ACERR_DUPLICATE_PATTERN:
-			rv = MATCHER_ERROR_DUPLICATE_PATTERN; 
+			rv = MATCHER_ERROR_DUPLICATE_PATTERN;
 			break;
-		case ACERR_LONG_PATTERN: 
-			rv = MATCHER_ERROR_LONG_PATTERN; 
+		case ACERR_LONG_PATTERN:
+			rv = MATCHER_ERROR_LONG_PATTERN;
 			break;
-		case ACERR_ZERO_PATTERN: 
-			rv = MATCHER_ERROR_ZERO_PATTERN; 
+		case ACERR_ZERO_PATTERN:
+			rv = MATCHER_ERROR_ZERO_PATTERN;
 			break;
-		case ACERR_TRIE_CLOSED: 
-			rv = MATCHER_ERROR_CLOSED; 
+		case ACERR_TRIE_CLOSED:
+			rv = MATCHER_ERROR_CLOSED;
 			break;
 	}
 	return rv;
 }
 
-MyMatcher::EnumReturnStatus 
+MyMatcher::EnumReturnStatus
 AhoCorasick::add_pattern (const char pattern[], PatternId id)
 {
 	String tmpString = pattern;
 	return add_pattern (tmpString, id);
+}
+
+MyMatcher::EnumReturnStatus
+AhoCorasick::add_pattern(const char *pattern, size_t len, PatternId id)
+{
+    EnumReturnStatus rv = MATCHER_ERROR_GENERAL;
+
+	AC_PATTERN_t patt;
+	patt.ptext.astring = (AC_ALPHABET_t*)pattern;
+	patt.ptext.length = len;
+	patt.id.u.number = id;
+	patt.rtext.astring = NULL;
+	patt.rtext.length = 0;
+
+	AC_STATUS_t status = ac_trie_add (_automata, &patt, 0);
+
+	switch (status)
+	{
+		case ACERR_SUCCESS:
+			rv = MATCHER_SUCCESS;
+			break;
+		case ACERR_DUPLICATE_PATTERN:
+			rv = MATCHER_ERROR_DUPLICATE_PATTERN;
+			break;
+		case ACERR_LONG_PATTERN:
+			rv = MATCHER_ERROR_LONG_PATTERN;
+			break;
+		case ACERR_ZERO_PATTERN:
+			rv = MATCHER_ERROR_ZERO_PATTERN;
+			break;
+		case ACERR_TRIE_CLOSED:
+			rv = MATCHER_ERROR_CLOSED;
+			break;
+	}
+	return rv;
 }
 
 bool AhoCorasick::match_any(const String& text)

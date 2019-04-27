@@ -70,14 +70,14 @@ Node *createNewNode(ACTree *tree, Node *parent) {
 	return node;
 }
 
-Pair *createNewPair(char c, Node *node) {
+Pair *createNewPair(unsigned char c, Node *node) {
 	Pair *p = (Pair*)malloc(sizeof(Pair));
 	p->c = c;
 	p->ptr = node;
 	return p;
 }
 
-Node *acGetNextNode(Node *node, char c) {
+Node *acGetNextNode(Node *node, unsigned char c) {
 	Pair *pair;
 	pair = (Pair*)(hashmap_get(node->gotos, (int)c));
 	if (pair == NULL)

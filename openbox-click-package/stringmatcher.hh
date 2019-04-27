@@ -63,10 +63,10 @@ public:
 
 
 private:
-    bool is_valid_patterns(Vector<String> &, ErrorHandler *) const; 
+    bool is_valid_patterns(Vector<String> &, ErrorHandler *) const;
     static int write_handler(const String &, Element *e, void *thunk, ErrorHandler *errh) CLICK_COLD;
     MyMatcher *_matcher;
-    Vector<String> _patterns;
+    bool _hex;
     int _matches;
 };
 

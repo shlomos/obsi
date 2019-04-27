@@ -604,7 +604,10 @@ UtilizationMonitor = build_element('UtilizationMonitor',
         write_handlers=['reset'])
 
 StringMatcher = build_element("StringMatcher",
-                                 keywords=[KeywordArgument('matcher')],
+                                 keywords=[
+                                    KeywordArgument('matcher'),
+                                    KeywordArgument('hex')
+                                 ],
                                  list_argument=ListArguments('pattern'),
                                  read_handlers=['pattern$i'],
                                  write_handlers=['pattern$i'])

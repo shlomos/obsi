@@ -72,9 +72,9 @@ void UtilizationMonitor::analyze(Packet *p) {
 
 	_usec_accum += (Timestamp::now() - p->timestamp_anno()).doubleval();
 	_count++;
-	_last_check = Timestamp::now().doubleval();
 
 	if (_count >= _window_size || Timestamp::now().doubleval() - _last_check > 5.0) {
+		_last_check = Timestamp::now().doubleval();
 		avg_proc = _usec_accum / _count;
 		printf("avg_proc = %f, _thresh * _avg_window_proc = %f, _windows_counts=%d\n", avg_proc, _thresh * _avg_window_proc, _windows_counts);
 		if ((avg_proc > _thresh * _avg_window_proc) && _windows_counts > 2) {

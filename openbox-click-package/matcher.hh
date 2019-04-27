@@ -32,6 +32,7 @@ class MyMatcher
 
 		virtual EnumReturnStatus add_pattern(const String &pattern, PatternId id) = 0;
 		virtual EnumReturnStatus add_pattern(const char pattern[], PatternId id) = 0;
+		virtual EnumReturnStatus add_pattern(const char *pattern, size_t len, PatternId id) = 0;
 		virtual void finalize() = 0;
 		virtual void reset() = 0; 
 		
