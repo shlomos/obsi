@@ -33,11 +33,7 @@ char *unhexlify(const char *hstr)
 	for (i = 0; i < strlen(hstr); i += 2)
 	{
 		c = (a2v(hstr[i]) << 4) + a2v(hstr[i + 1]);
-		if (c == 0) {
-			*pbstr++ = -128;
-		} else {
-			*pbstr++ = c;
-		}
+		*pbstr++ = c;
 	}
 	return bstr;
 }
@@ -50,11 +46,7 @@ void unhexlify(const char *src, char *dst, size_t len)
 	for (i = 0; i < len; i += 2)
 	{
 		c = (a2v(src[i]) << 4) + a2v(src[i + 1]);
-		if (c == 0) {
-			*dst++ = -128;
-		} else {
-			*dst++ = c;
-		}
+		*dst++ = c;
 	}
 }
 

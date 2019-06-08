@@ -23,6 +23,9 @@
 
 #define GET_MATCH_BIT(value) ((value) & 0x01)
 #define GET_PTR_TYPE(value) (((value) >> 1) & 0x03)
+
+#define max(x, y) (((x) > (y)) ? (x) : (y))
+#define min(x, y) (((x) < (y)) ? (x) : (y))
 /*
 #define GET_3BITS_ELEMENT(arr, i) \
 		(((((3 * (i)) % 8) < 6) ? ((arr)[(3 * (i)) / 8] & MASK_BITS[(3 * (i)) % 8]) : 	\
@@ -34,13 +37,44 @@
 										 ((arr)[(3 * (i)) / 8] & MASK_BITS_7) : 0) >> ((3 * (i)) % 8))
 */
 
-inline uchar GET_3BITS_ELEMENT(uchar *arr, int i);
-
 #ifdef COUNT_CALLS
 int getCounter_BitArray();
 #endif
 
-inline void SET_3BITS_ELEMENT(uchar *arr, int i, uchar value);
+static const uchar MASK_BITS[] = {
+		MASK_BITS_012,
+		MASK_BITS_123,
+		MASK_BITS_234,
+		MASK_BITS_345,
+		MASK_BITS_456,
+		MASK_BITS_567
+};
+
+static const unsigned char POW2[] = { 0, 2, 4, 8, 16, 32, 64, 128 };
+
+inline uchar GET_3BITS_ELEMENT(uchar *arr, int i) {
+	int bit = (3 * i) % 8;
+	int byte = (3 * (i)) / 8;
+
+	return (((arr[byte] >> bit) % (POW2[min(8 - bit, 3)]))) |
+			((bit > 5) ? (((arr[byte + 1]) % (POW2[bit - 5])) << (max(8 - bit, 0))) : 0);
+}
+
+inline void SET_3BITS_ELEMENT(uchar *arr, int i, uchar value) {
+	int bit = (3 * (i)) % 8;
+	int byte = (3 * (i)) / 8;
+
+	if (bit < 6) {
+		arr[byte] = arr[byte] | (((uchar)(value << bit)) & MASK_BITS[bit]);
+	} else if (bit == 6) {
+		arr[byte] = arr[byte] | (((uchar)(value << 6)) & MASK_BITS_67);
+		arr[byte + 1] = arr[byte + 1] | (((uchar)((value << 6) >> 8)) & MASK_BITS_0);
+	} else if (bit == 7) {
+		arr[byte] = arr[byte] | (((uchar)(value << 7)) & MASK_BITS_7);
+		arr[byte + 1] = arr[byte + 1] | (((uchar)((value << 7) >> 8)) & MASK_BITS_01);
+	}
+}
+
 
 #define GET_1BIT_ELEMENT(arr, i) (((arr)[(i) / 8] >> ((i) % 8)) & 0x01)
 

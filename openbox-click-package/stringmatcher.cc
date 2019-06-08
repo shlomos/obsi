@@ -9,6 +9,7 @@
 
 #include <execinfo.h>
 #include <stdio.h>
+#include <stdlib.h>
 CLICK_DECLS
 
 StringMatcher::StringMatcher() :
@@ -66,7 +67,7 @@ int StringMatcher::configure(Vector<String> &conf, ErrorHandler *errh)
 			if (_matcher->add_pattern(patt_array[i], patt.length() / 2, i))
 				errh->warning("Hex pattern #%d is a duplicate", i);
 		} else {
-			if (_matcher->add_pattern(patt, i))
+			if (_matcher->add_pattern(patt.c_str(), patt.length(), i))
 				errh->warning("String pattern #%d is a duplicate", i);
 		}
 	}
@@ -112,9 +113,9 @@ bool StringMatcher::is_valid_patterns(Vector<String> &patterns, ErrorHandler *er
 		clean = cp_unquote(patterns[i]);
 		if (_hex) {
 			patt = unhexlify(clean.c_str());
-			rv = matcher->add_pattern(patt, clean.length(), i);
+			rv = matcher->add_pattern(patt, clean.length() / 2, i);
 		} else {
-			rv = matcher->add_pattern(clean, i);
+			rv = matcher->add_pattern(clean.c_str(), clean.length(), i);
 		}
 		switch (rv) {
 			case MyMatcher::MATCHER_ERROR_ZERO_PATTERN:
