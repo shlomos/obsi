@@ -417,4 +417,4 @@ int matchTableMachine_no_trasfer(TableStateMachine *machine, MulticoreManager *m
 }
 
 CLICK_ENDDECLS
-ELEMENT_PROVIDES(StateMachineC)
+ELEMENT_PROVIDES(TableStateMachineC)
