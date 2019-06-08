@@ -9,6 +9,10 @@
 #define TABLESTATEMACHINE_H_
 #include "../Common/Types.h"
 #include "../Common/BitArray/BitArray.h"
+#include "../AhoCorasick/ACTypes.h"
+
+
+CLICK_DECLS
 //#include "../Multicore/MulticoreManager.h"
 
 //typedef unsigned int STATE_PTR_TYPE_WIDE;
@@ -64,5 +68,6 @@ int matchTableMachine_no_trasfer(TableStateMachine *machine, struct multicore_ma
 //	SET_1BIT_ELEMENT((machine)->commons, stateID, 0)
 
 #endif
+CLICK_ENDDECLS
 
 #endif /* TABLESTATEMACHINE_H_ */
