@@ -20,7 +20,7 @@ AhoCorasick_Other::AhoCorasick_Other()
 AhoCorasick_Other::~AhoCorasick_Other()
 {
 	if (_ps) {
-		destroyStateMachine(_ps);
+		destroyTableStateMachine(_ps);
 	}
 	_ps = NULL;
 }
