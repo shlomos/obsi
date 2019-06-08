@@ -39,7 +39,7 @@ Returns the number of matched packets.
 When written, resets the C<matches>.
 */
 
-class StringMatcher : public ClassifyElement<StringMatcher> {
+class StringMatcher : public Element {
 public:
     StringMatcher() CLICK_COLD;
     ~StringMatcher() CLICK_COLD;
