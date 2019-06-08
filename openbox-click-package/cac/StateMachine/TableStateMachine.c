@@ -14,6 +14,7 @@
 #include "TableStateMachine.h"
 #include "../Multicore/MulticoreManager.h"
 
+CLICK_DECLS
 #ifdef COUNT_BY_DEPTH
 #define DEPTHMAP
 #endif
@@ -32,6 +33,7 @@
 TableStateMachine *createTableStateMachine(ACTree *tree, int num_common, double uncommon_rate_limit) {
 	TableStateMachine *machine;
 	STATE_PTR_TYPE_WIDE *table;
+	int numStates = tree->size;
 	unsigned char *matches;
 	char **patterns;
 #ifdef DEPTHMAP
@@ -326,3 +328,6 @@ int matchTableMachine_no_trasfer(TableStateMachine *machine, MulticoreManager *m
 	}
 	return res;
 }
+
+CLICK_ENDDECLS
+ELEMENT_PROVIDES(StateMachineC)

@@ -9,6 +9,10 @@
 #define TABLESTATEMACHINE_H_
 #include "../Common/Types.h"
 #include "../Common/BitArray/BitArray.h"
+#include "../AhoCorasick/ACTypes.h"
+
+
+CLICK_DECLS
 //#include "../Multicore/MulticoreManager.h"
 
 //typedef unsigned int STATE_PTR_TYPE_WIDE;
@@ -37,7 +41,7 @@ typedef struct {
 #endif
 } TableStateMachine;
 
-TableStateMachine *createTableStateMachine(unsigned int numStates, int num_common, double uncommon_rate_limit);
+TableStateMachine *createTableStateMachine(ACTree *tree, int num_common, double uncommon_rate_limit);
 void destroyTableStateMachine(TableStateMachine *machine);
 
 void setGoto(TableStateMachine *machine, STATE_PTR_TYPE_WIDE currentState, char c, STATE_PTR_TYPE_WIDE nextState);
@@ -64,5 +68,6 @@ int matchTableMachine_no_trasfer(TableStateMachine *machine, struct multicore_ma
 //	SET_1BIT_ELEMENT((machine)->commons, stateID, 0)
 
 #endif
+CLICK_ENDDECLS
 
 #endif /* TABLESTATEMACHINE_H_ */
