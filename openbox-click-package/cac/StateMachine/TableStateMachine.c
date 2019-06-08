@@ -29,7 +29,7 @@
 #define GET_NEXT_STATE(table, state, c) \
 	((table)[GET_TABLE_IDX(state, c)])
 
-TableStateMachine *createTableStateMachine(unsigned int numStates, int num_common, double uncommon_rate_limit) {
+TableStateMachine *createTableStateMachine(ACTree *tree, int num_common, double uncommon_rate_limit) {
 	TableStateMachine *machine;
 	STATE_PTR_TYPE_WIDE *table;
 	unsigned char *matches;
@@ -37,6 +37,8 @@ TableStateMachine *createTableStateMachine(unsigned int numStates, int num_commo
 #ifdef DEPTHMAP
 	int *depthMap;
 #endif
+
+	acFinalize(tree, 1, 0);
 
 	machine = (TableStateMachine*)malloc(sizeof(TableStateMachine));
 	table = (STATE_PTR_TYPE_WIDE*)malloc(sizeof(STATE_PTR_TYPE_WIDE) * numStates * 256);
@@ -67,6 +69,11 @@ TableStateMachine *createTableStateMachine(unsigned int numStates, int num_commo
 	machine->depthMap = depthMap;
 #endif
 
+	// Put states data
+	putStates(machine, tree, 0);
+
+	// Destroy AC tree
+	acDestroyTreeNodes(tree);
 
 	return machine;
 }

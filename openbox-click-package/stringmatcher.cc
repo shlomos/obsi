@@ -41,6 +41,8 @@ int StringMatcher::configure(Vector<String> &conf, ErrorHandler *errh)
 		_matcher = new WuManber();
 	} else if (!strncmp(matcher_type, CompressedAhoCorasick::NAME, strlen(CompressedAhoCorasick::NAME))) {
 		_matcher = new CompressedAhoCorasick();
+	} else if (!strncmp(matcher_type, AhoCorasick_Other::NAME, strlen(AhoCorasick_Other::NAME))) {
+		_matcher = new AhoCorasick_Other();
 	} else {
 		errh->error("Unknown matcher type %s", matcher_type);
 		return -1;
@@ -102,6 +104,8 @@ bool StringMatcher::is_valid_patterns(Vector<String> &patterns, ErrorHandler *er
 		matcher = new WuManber();
 	} else if (!strncmp(_matcher->getMatcherType(), CompressedAhoCorasick::NAME, strlen(CompressedAhoCorasick::NAME))) {
 		matcher = new CompressedAhoCorasick();
+	} else if (!strncmp(_matcher->getMatcherType(), AhoCorasick_Other::NAME, strlen(AhoCorasick_Other::NAME))) {
+		matcher = new AhoCorasick_Other();
 	} else {
 		valid = false;
 		errh->error("Invalid matcher type %s", _matcher->getMatcherType());
@@ -208,8 +212,9 @@ void StringMatcher::add_handlers() {
 
 CLICK_ENDDECLS
 ELEMENT_REQUIRES(userlevel AhoCorasick)
-ELEMENT_REQUIRES(userlevel Binascii)
 ELEMENT_REQUIRES(userlevel WuManber)
 ELEMENT_REQUIRES(userlevel CompressedAhoCorasick)
+ELEMENT_REQUIRES(userlevel AhoCorasick_Other)
+ELEMENT_REQUIRES(userlevel Binascii)
 EXPORT_ELEMENT(StringMatcher)
 ELEMENT_MT_SAFE(StringMatcher)
