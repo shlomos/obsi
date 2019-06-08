@@ -4,6 +4,7 @@
 #include "ahocorasickplus.hh"
 #include "modifiedwumanber.hh"
 #include "compressedahocorasick.hh"
+#include "ahocorasick_other.hh"
 CLICK_DECLS
 
 /*
