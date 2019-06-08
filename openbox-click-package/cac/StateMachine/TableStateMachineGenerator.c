@@ -12,6 +12,8 @@
 #include "../Common/HashMap/HashMap.h"
 #include "TableStateMachineGenerator.h"
 
+CLICK_DECLS
+
 #ifdef COUNT_BY_DEPTH
 #define DEPTHMAP
 #endif
@@ -203,3 +205,6 @@ TableStateMachine *generateTableStateMachine(const char *path, int num_commons, 
 */
 	return machine;
 }
+
+CLICK_ENDDECLS
+ELEMENT_PROVIDES(TableStateMachineC)

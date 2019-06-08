@@ -77,8 +77,9 @@ void AhoCorasick_Other::finalize()
 	}
 	/* end of fucked up shit */
 
-	_ps = createTableStateMachine(_tree, DEFAULT_COMMON_NUM, (double)DEFAULT_UNCOMMON_LIM/100.0);
-	free(_tree);
+	_ps = createTableStateMachine(_tree, DEFAULT_COMMON_NUM, (double)DEFAULT_UNCOMMON_LIM / 100.0);
+	if (_tree)
+		free(_tree);
 	_tree = NULL;
 	_is_open = true;
 }

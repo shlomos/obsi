@@ -7,14 +7,16 @@
 
 #ifndef TABLESTATEMACHINE_H_
 #define TABLESTATEMACHINE_H_
+
 #include "../Common/Types.h"
 #include "../Common/BitArray/BitArray.h"
 #include "../AhoCorasick/ACTypes.h"
 
 
 CLICK_DECLS
-//#include "../Multicore/MulticoreManager.h"
-
+#ifdef	__cplusplus
+extern "C" {
+#endif
 //typedef unsigned int STATE_PTR_TYPE_WIDE;
 #ifdef COUNT_BY_DEPTH
 #define DEPTHMAP
@@ -22,8 +24,6 @@ CLICK_DECLS
 #ifdef PRINT_STATE_VISIT_HIST
 #define DEPTHMAP
 #endif
-
-struct multicore_manager;
 
 typedef struct {
 	STATE_PTR_TYPE_WIDE *table;
@@ -48,10 +48,10 @@ void setGoto(TableStateMachine *machine, STATE_PTR_TYPE_WIDE currentState, char 
 void setMatch(TableStateMachine *machine, STATE_PTR_TYPE_WIDE state, char *pattern, int length);
 
 //int matchTableMachine(TableStateMachine *tableMachine, char *input, int length, int verbose);
-int matchTableMachine(TableStateMachine *machine, struct multicore_manager *manager, int transfer_heavy, char *input, int length, int verbose,
+int matchTableMachine(TableStateMachine *machine, int transfer_heavy, char *input, int length, int verbose,
 		long *numAccesses, long *accessesByDepth, long *accessesByState, int *visits, int *is_heavy, int *last_idx_in_root, double *uncommonRate);
 
-int matchTableMachine_no_trasfer(TableStateMachine *machine, struct multicore_manager *manager, char *input, int length, int verbose, int drop);
+int matchTableMachine_no_trasfer(TableStateMachine *machine, char *input, int length, int verbose, int drop);
 
 #ifdef HEAVY_PACKET_RECOGNITION
 
@@ -67,6 +67,10 @@ int matchTableMachine_no_trasfer(TableStateMachine *machine, struct multicore_ma
 	(((machine)->commons[stateID]) = 0)
 //	SET_1BIT_ELEMENT((machine)->commons, stateID, 0)
 
+#endif
+
+#ifdef	__cplusplus
+}
 #endif
 CLICK_ENDDECLS
 

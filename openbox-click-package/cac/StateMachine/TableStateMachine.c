@@ -15,7 +15,6 @@
 #include "../AhoCorasick/NodeQueue.h"
 #include "../Common/HashMap/HashMap.h"
 #include "TableStateMachine.h"
-#include "../Multicore/MulticoreManager.h"
 
 CLICK_DECLS
 #ifdef COUNT_BY_DEPTH
@@ -234,7 +233,7 @@ STATE_PTR_TYPE_WIDE getNextStateFromTable(TableStateMachine *machine, STATE_PTR_
 static long _idx = 0;
 #endif
 
-int matchTableMachine(TableStateMachine *machine, MulticoreManager *manager, int transfer_heavy, char *input, int length, int verbose,
+int matchTableMachine(TableStateMachine *machine, int transfer_heavy, char *input, int length, int verbose,
 		long *numAccesses, long *accessesByDepth, long *accessesByState, int *visits,
 		int *is_heavy, int *last_idx_in_root, double *uncommonRate) {
 //	int matchTableMachine(TableStateMachine *machine, char *input, int length, int verbose) {
@@ -364,7 +363,7 @@ int matchTableMachine(TableStateMachine *machine, MulticoreManager *manager, int
 	return res;
 }
 
-int matchTableMachine_no_trasfer(TableStateMachine *machine, MulticoreManager *manager,
+int matchTableMachine_no_trasfer(TableStateMachine *machine,
 		char *input, int length, int verbose, int drop) {
 	STATE_PTR_TYPE_WIDE current, next;
 	STATE_PTR_TYPE_WIDE *table;

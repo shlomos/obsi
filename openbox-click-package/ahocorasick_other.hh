@@ -2,7 +2,7 @@
 #define CLICK_AHOCORASICK_OTHER_H_
 #include "matcher.hh"
 #include "cac/AhoCorasick/ACBuilder.h"
-#include "cac/StateMachine/TableStateMachineGenerator.h"
+#include "cac/StateMachine/TableStateMachine.h"
 #include <click/string.hh>
 #include <click/packet.hh>
 CLICK_DECLS
