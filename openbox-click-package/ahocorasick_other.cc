@@ -84,7 +84,8 @@ void AhoCorasick_Other::finalize()
 }
 
 bool AhoCorasick_Other::match_any(const char *text_to_match, int length) {
-	int num_matches, is_heavy, last_idx_in_root, uncommonRate;
+	int num_matches, is_heavy, last_idx_in_root;
+	double uncommonRate;
 	char *text_cpy = (char *)calloc(length, sizeof(char));
 
 	memcpy(text_cpy, text_to_match, length);
