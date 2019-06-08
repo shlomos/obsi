@@ -90,7 +90,7 @@ bool AhoCorasick_Other::match_any(const char *text_to_match, int length) {
 	char *text_cpy = (char *)calloc(length, sizeof(char));
 
 	memcpy(text_cpy, text_to_match, length);
-	num_matches = matchTableMachine(_ps, NULL, FALSE, text_cpy, length, 0, NULL, NULL, NULL, NULL, &is_heavy, &last_idx_in_root, &uncommonRate);
+	num_matches = matchTableMachine(_ps, FALSE, text_cpy, length, 0, NULL, NULL, NULL, NULL, &is_heavy, &last_idx_in_root, &uncommonRate);
 	return num_matches > 0;
 }
 
