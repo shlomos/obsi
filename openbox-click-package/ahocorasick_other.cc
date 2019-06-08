@@ -20,7 +20,7 @@ AhoCorasick_Other::AhoCorasick_Other()
 AhoCorasick_Other::~AhoCorasick_Other()
 {
 	if (_ps) {
-		destroyStateMachine(_ps);
+		destroyTableStateMachine(_ps);
 	}
 	_ps = NULL;
 }
@@ -113,7 +113,7 @@ bool AhoCorasick_Other::is_open() {
 }
 
 CLICK_ENDDECLS
-ELEMENT_REQUIRES(userlevel TableStateMachineGeneratorC)
+ELEMENT_REQUIRES(userlevel TableStateMachineC)
 ELEMENT_REQUIRES(userlevel ACBuilderC)
 ELEMENT_PROVIDES(AhoCorasick_Other)
 ELEMENT_MT_SAFE(AhoCorasick_Other)
