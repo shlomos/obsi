@@ -33,6 +33,7 @@ CLICK_DECLS
 TableStateMachine *createTableStateMachine(ACTree *tree, int num_common, double uncommon_rate_limit) {
 	TableStateMachine *machine;
 	STATE_PTR_TYPE_WIDE *table;
+	int numStates = tree->size;
 	unsigned char *matches;
 	char **patterns;
 #ifdef DEPTHMAP

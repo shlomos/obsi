@@ -41,7 +41,7 @@ typedef struct {
 #endif
 } TableStateMachine;
 
-TableStateMachine *createTableStateMachine(unsigned int numStates, int num_common, double uncommon_rate_limit);
+TableStateMachine *createTableStateMachine(ACTree *tree, int num_common, double uncommon_rate_limit);
 void destroyTableStateMachine(TableStateMachine *machine);
 
 void setGoto(TableStateMachine *machine, STATE_PTR_TYPE_WIDE currentState, char c, STATE_PTR_TYPE_WIDE nextState);
