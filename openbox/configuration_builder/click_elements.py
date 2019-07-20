@@ -339,6 +339,17 @@ FromNetmapDevice = build_element('FromNetmapDevice', mandatory_positional=[Manda
                                      ],
                            read_handlers=['count'],
                            write_handlers=['reset_counts'])
+FromDPDKDevice = build_element('FromDPDKDevice', mandatory_positional=[MandatoryPositionalArgument('devname')],
+                           keywords=[KeywordArgument('promisc'),
+                                     KeywordArgument('burst'),
+                                     KeywordArgument('maxthreads'),
+                                     KeywordArgument('threadoffset'),
+                                     KeywordArgument('keephand'),
+                                     KeywordArgument('maxqueues'),
+                                     KeywordArgument('numa'),
+                                     ],
+                           read_handlers=['count'],
+                           write_handlers=['reset_counts'])
 Counter = build_element('Counter',
                         read_handlers=['count', 'byte_count', 'rate', 'byte_rate'],
                         write_handlers=['reset_counts'])
@@ -387,6 +398,22 @@ ToDevice = build_element('ToDevice',
                          ]
                          )
 ToNetmapDevice = build_element('ToNetmapDevice',
+                         mandatory_positional=[
+                             MandatoryPositionalArgument('devname')
+                         ],
+                         optional_positional=[
+                             OptionalPositionalArgument('burst')
+                         ],
+                         keywords=[
+                             KeywordArgument('quiet'),
+                             KeywordArgument('queue'),
+                             KeywordArgument('allow_nonexistent'),
+                             KeywordArgument('no_pad'),
+                         ],
+                         read_handlers=['count', 'calls', 'drops'],
+                         write_handlers=['reset_counts'],
+                     )
+ToDPDKDevice = build_element('ToDPDKDevice',
                          mandatory_positional=[
                              MandatoryPositionalArgument('devname')
                          ],

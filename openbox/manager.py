@@ -170,7 +170,8 @@ class Manager(object):
                       nthreads=config.Engine.NTHREADS,
                       push_messages_type=config.Engine.PUSH_MESSAGES_SOCKET_TYPE,
                       push_messages_endpoint=config.Engine.PUSH_MESSAGES_SOCKET_ENDPOINT,
-                      push_messages_channel=config.Engine.PUSH_MESSAGES_CHANNEL)
+                      push_messages_channel=config.Engine.PUSH_MESSAGES_CHANNEL,
+                      network_stack=config.Engine.NETWORK_STACK.name)
         uri = _get_full_uri(config.Runner.Rest.BASE_URI, config.Runner.Rest.Endpoints.START)
         try:
             self._http_client.fetch(uri, method="POST", body=json_encode(params))

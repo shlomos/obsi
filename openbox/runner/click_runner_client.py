@@ -10,7 +10,18 @@ import psutil
 import subprocess
 import os
 import time
+from enum import Enum
+
 from runner_exceptions import EngineClientError
+
+
+class NetworkStack(Enum):
+    KERNEL = 0
+    NETMAP = 1
+    DPDK = 2
+
+    def __str__(self):
+        return "{}:{}".format(self.name, self.value)
 
 
 class ClickRunnerClient(object):
@@ -36,12 +47,14 @@ class ClickRunnerClient(object):
         self._startup_time = None
 
     def start(self, processing_graph=None, control_socket_type=None, control_socket_endpoint=None,
-              nthreads=None, push_messages_type=None, push_messages_endpoint=None, push_messages_channel=None):
+              nthreads=None, push_messages_type=None, push_messages_endpoint=None, push_messages_channel=None,
+              network_stack=None):
         self.expression = processing_graph
         self.control_socket_type = control_socket_type
         self.control_socket_endpoint = control_socket_endpoint
         self.push_messages_channel = push_messages_channel
         self.nthreads = nthreads
+        self.network_stack = NetworkStack[network_stack]
         if self.control_socket_type and (self.control_socket_type not in ('TCP', 'UNIX') or
                                                  self.control_socket_endpoint is None):
             raise ValueError("ControlSocket must be of type TCP or UNIX and with a valid endpoint")
@@ -104,7 +117,9 @@ class ClickRunnerClient(object):
         cmd = [self.click_bin]
         if self.expression:
             cmd.append('-e')
-            cmd.append(self.expression)
+            cmd.append("\'{}\'".format(self.expression))
+        if self.network_stack == NetworkStack.DPDK:
+            cmd.append('--dpdk -c 0x01 -n 1 --')  # Should receive processor affinity (e.g. 0x04) from config
         if self.allow_reconfigure:
             cmd.append('-R')
         if self.nthreads:

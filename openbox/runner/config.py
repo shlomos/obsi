@@ -8,7 +8,8 @@
 """
 A configuration and definitions file used by the EE runner server and client
 """
-from click_runner_client import ClickRunnerClient
+from click_runner_client import ClickRunnerClient, NetworkStack
+
 
 ENGINES = {'click': (ClickRunnerClient, dict(click_bin=r'/usr/local/bin/click', allow_reconfigure=True,
                                              click_path=r'/usr/local/lib'))}
@@ -16,7 +17,7 @@ ENGINES = {'click': (ClickRunnerClient, dict(click_bin=r'/usr/local/bin/click', 
 
 class RestServer:
     ENGINE_START_PARAMETERS = ('processing_graph', 'control_socket_type', 'control_socket_endpoint', 'nthreads',
-                               'push_messages_type', 'push_messages_endpoint', 'push_messages_channel')
+                               'push_messages_type', 'push_messages_endpoint', 'push_messages_channel', 'network_stack')
     PORT = 9001
     DEBUG = True
     CLIENT_RUN_POLLING_INTERVAL = 500  # Milliseconds
