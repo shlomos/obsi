@@ -390,6 +390,27 @@ FromNetmapDevice = build_click_block('FromNetmapDevice',
                                                  drops=('from_netmap_device', 'kernel-drops', 'identity')),
                                write_mapping=dict(reset_counts=('counter', 'reset_counts', 'identity')))
 
+FromDPDKDevice = build_click_block('FromDPDKDevice',
+                               config_mapping=dict(devname=_no_transform('devname'),
+                                                   promisc=_no_transform('promisc')),
+                               elements=[
+                                   dict(name='from_dpdk_device', type='FromDPDKDevice',
+                                        config=dict(devname='$devname', promisc='$promisc')),
+                                   dict(name='mark_ip_header', type='AutoMarkIPHeader', config={}),
+                                   dict(name='counter', type='Counter', config={})
+                               ],
+                               connections=[
+                                   dict(src='from_dpdk_device', dst='mark_ip_header', src_port=0, dst_port=0),
+                                   dict(src='mark_ip_header', dst='counter', src_port=0, dst_port=0),
+                               ],
+                               output='counter',
+                               read_mapping=dict(count=('counter', 'count', 'to_int'),
+                                                 byte_count=('counter', 'byte_count', 'to_int'),
+                                                 rate=('counter', 'rate', 'to_float'),
+                                                 byte_rate=('counter', 'byte_rate', 'to_float'),
+                                                 drops=('from_dpdk_device', 'kernel-drops', 'identity')),
+                               write_mapping=dict(reset_counts=('counter', 'reset_counts', 'identity')))
+
 FromDump = build_click_block('FromDump',
                              config_mapping=dict(filename=_no_transform('filename'),
                                                  timing=_no_transform('timing'),
@@ -467,6 +488,14 @@ ToNetmapDevice = build_click_block('ToNetmapDevice',
                                  dict(name='to_netmap_device', type='ToNetmapDevice', config=dict(devname='$devname'))
                              ],
                              input='to_netmap_device'
+                             )
+
+ToDPDKDevice = build_click_block('ToDPDKDevice',
+                             config_mapping=dict(devname=_no_transform('devname')),
+                             elements=[
+                                 dict(name='to_dpdk_device', type='ToDPDKDevice', config=dict(devname='$devname'))
+                             ],
+                             input='to_dpdk_device'
                              )
 
 Log = build_click_block('Log',

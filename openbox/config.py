@@ -11,6 +11,7 @@ The main configuration of the OBSI
 import os.path
 import socket
 from configuration_builder.click_configuration_builder import ClickConfigurationBuilder
+from runner.config import NetworkStack
 import runner.config as runner_config
 import control.config as control_config
 
@@ -18,7 +19,6 @@ import control.config as control_config
 BASE_PATH = os.path.dirname(os.path.realpath(__file__))
 
 OPENBOX_VERSION = '1.0'
-
 
 class Manager:
     # The number of attempts for checking if a remote REST server is listening
@@ -28,7 +28,7 @@ class Manager:
     INTERVAL_BETWEEN_CONNECTION_TRIES = 1
 
     # Http client request timeout in seconds
-    REQUEST_TIMEOUT = 10
+    REQUEST_TIMEOUT = 20
 
 
 class KeepAlive:
@@ -66,10 +66,10 @@ class Engine:
     PUSH_MESSAGES_SOCKET_TYPE = 'TCP'
     PUSH_MESSAGES_SOCKET_ENDPOINT = 10002
     PUSH_MESSAGES_CHANNEL = 'openbox'
-    NTHREADS = 2
-    NETMAP = False
-    IFACE = "eth2"
-    NETMAP_PLACEHOLDER = "" if not NETMAP else "NetmapInfo(EXTRA_BUFFER 65536);FromNetmapDevice(netmap:{iface}) -> discard;".format(iface=IFACE)
+    NTHREADS = 4
+    NETWORK_STACK = NetworkStack.DPDK
+    IFACE = "enp0s25"
+    NETMAP_PLACEHOLDER = "" if NETWORK_STACK != NetworkStack.NETMAP else "NetmapInfo(EXTRA_BUFFER 65536);FromNetmapDevice(netmap:{iface}) -> discard;".format(iface=IFACE)
     REQUIREMENTS = ['openbox']
     BASE_EMPTY_CONFIG = r'''{requirements}
 ChatterSocket("{push_type}", {push_endpoint}, RETRIES 3, RETRY_WARNINGS false, CHANNEL {channel});

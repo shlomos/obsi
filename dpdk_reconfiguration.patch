@@ -1,0 +1,42 @@
+diff --git a/elements/userlevel/controlsocket.cc b/elements/userlevel/controlsocket.cc
+index 6d3190162..4982e70ad 100644
+--- a/elements/userlevel/controlsocket.cc
++++ b/elements/userlevel/controlsocket.cc
+@@ -846,8 +846,8 @@ ControlSocket::selected(int fd, int)
+ 
+     // read commands from socket (but only a bit on each select)
+     if (!conn->in_closed)
+-	if (char *buf = conn->in_text.reserve(2048)) {
+-	    ssize_t r = read(conn->fd, buf, 2048);
++	if (char *buf = conn->in_text.reserve(1048576)) {
++	    ssize_t r = read(conn->fd, buf, 1048576);
+ 	    if (r != 0 && r != -1)
+ 		conn->in_text.adjust_length(r);
+ 	    else if (r == 0 || (r == -1 && errno != EAGAIN && errno != EINTR))
+diff --git a/elements/userlevel/queuedevice.cc b/elements/userlevel/queuedevice.cc
+index b4dc5e81c..28e1614fb 100644
+--- a/elements/userlevel/queuedevice.cc
++++ b/elements/userlevel/queuedevice.cc
+@@ -90,6 +90,7 @@ bool QueueDevice::get_spawning_threads(Bitvector& bmk, bool, int port)
+ }
+ 
+ void QueueDevice::cleanup_tasks() {
++    if (!_tasks.size()) return;
+     for (int i = 0; i < usable_threads.weight(); i++) {
+         if (_tasks[i]) {
+             delete _tasks[i];
+diff --git a/lib/dpdkdevice.cc b/lib/dpdkdevice.cc
+index 8224c352f..bbfa147a5 100644
+--- a/lib/dpdkdevice.cc
++++ b/lib/dpdkdevice.cc
+@@ -559,8 +559,8 @@ int DPDKDevice::add_queue(DPDKDevice::Dir dir,
+                            ErrorHandler *errh)
+ {
+     if (_is_initialized) {
+-        return errh->error(
+-            "Trying to configure DPDK device after initialization");
++        //return errh->error(
++        //    "Trying to configure DPDK device after initialization");
+     }
+ 
+     if (dir == RX) {
