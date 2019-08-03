@@ -36,7 +36,7 @@ int StringMatcher::configure(Vector<String> &conf, ErrorHandler *errh)
 	  return -1;
 
 	matcher_type = m_type.c_str();
-	if (!strncmp(matcher_type, AhoCorasick::NAME, strlen(AhoCorasick::NAME))) {
+	if (!strncmp(matcher_type, AhoCorasick::NAME, strlen(AhoCorasick::NAME)) && m_type.length() == strlen(AhoCorasick::NAME)) {
 		_matcher = new AhoCorasick();
 	} else if (!strncmp(matcher_type, WuManber::NAME, strlen(WuManber::NAME))) {
 		_matcher = new WuManber();
@@ -99,7 +99,7 @@ bool StringMatcher::is_valid_patterns(Vector<String> &patterns, ErrorHandler *er
 	MyMatcher *matcher;
 	MyMatcher::EnumReturnStatus rv;
 
-	if (!strncmp(_matcher->getMatcherType(), AhoCorasick::NAME, strlen(AhoCorasick::NAME))) {
+	if (!strncmp(_matcher->getMatcherType(), AhoCorasick::NAME, strlen(AhoCorasick::NAME)) && strlen(_matcher->getMatcherType()) == strlen(AhoCorasick::NAME)) {
 		matcher = new AhoCorasick();
 	} else if (!strncmp(_matcher->getMatcherType(), WuManber::NAME, strlen(WuManber::NAME))) {
 		matcher = new WuManber();
