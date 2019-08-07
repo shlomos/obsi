@@ -15,7 +15,7 @@ Note: The installation script might prompt you to install additional packages.
 
 `cd ~/obsi/openbox`  
 `vim config.py (and adjust any configuration parameters)`    
-`sudo python manager.py`  
+`sudo python manager.py` or `./run` at openbox directory can be used  
 
 If you want to run against a mock controller:  
 `cd ~/obsi/tests`  
@@ -27,4 +27,4 @@ Just kill the process and the 2 subprocess it creates:
 `sudo kill -9 <PID>`  
 
 # Auther
-Pavel Lazar (pavel.lazar (at) gmail.com)
+Pavel Lazar (pavel.lazar (at) gmail.com) and Shlomo Shenzis (shlomo.shenzis@mail.huji.ac.il)
