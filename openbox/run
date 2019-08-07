@@ -1,6 +1,5 @@
 #!/bin/bash
 
-sudo modprobe netmap
 sudo ./manager.py --logging=debug $@
 
 sudo kill $(ps aux | grep '[m]anager\.py' | awk '{print $2}') 2> /dev/null

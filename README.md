@@ -8,11 +8,14 @@ Clone this repo (assuming it was cloned into the $HOME directory), run the follo
 `sudo ./install.sh`    
 
 Note: The installation script might prompt you to install additional packages.
+Note: The install script installs both Netmap and DPDK on the system.
 
 # Running
 
 (assuming it was cloned into the $HOME directory):
 
+`cd ~/obsi`
+`./activate.sh [kernel | netmap | dpdk] <interfaces...>`
 `cd ~/obsi/openbox`  
 `vim config.py (and adjust any configuration parameters)`    
 `sudo python manager.py` or `./run` at openbox directory can be used  

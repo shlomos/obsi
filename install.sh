@@ -11,7 +11,7 @@ DPDK_URL="https://github.com/DPDK/dpdk.git"
 
 function install_build_utils {
 	apt-get update
-	apt-get install build-essential python-dev g++ python-pip git libpcap-dev zlib1g-dev pkg-config
+	apt-get install build-essential python-dev g++ python-pip git libpcap-dev zlib1g-dev pkg-config ethtool linux-headers-$(uname -r)
 }
 
 function install_re2 {
@@ -110,11 +110,12 @@ install_openbox_click_package
 install_python_dependency
 
 # this command is needed to disable NIC offloading
-# sudo ethtool -K eth1 tx off rx off gso off tso off gro off lro off
+113 # sudo ethtool -K eth1 tx off rx off gso off tso off gro off lro off
+114
+115 # This is needed if using DPDK:
+116 # echo 1024 > /sys/devices/system/node/node0/hugepages/hugepages-1024kB/nr_hugepages
+117 # mkdir /mnt/huge
+118 # mount -t hugetlbfs nodev /mnt/huge
+119 # modprobe uio
+120 # modprobe vfio-pci
 
-# This is needed if using DPDK:
-# echo 1024 > /sys/devices/system/node/node0/hugepages/hugepages-1024kB/nr_hugepages
-# mkdir /mnt/huge
-# mount -t hugetlbfs nodev /mnt/huge
-# modprobe uio
-# modprobe vfio-pci
