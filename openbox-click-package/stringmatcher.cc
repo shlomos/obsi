@@ -36,12 +36,14 @@ int StringMatcher::configure(Vector<String> &conf, ErrorHandler *errh)
 	  return -1;
 
 	matcher_type = m_type.c_str();
-	if (!strncmp(matcher_type, AhoCorasick::NAME, strlen(AhoCorasick::NAME))) {
+	if (!strncmp(matcher_type, AhoCorasick::NAME, strlen(AhoCorasick::NAME)) && m_type.length() == strlen(AhoCorasick::NAME)) {
 		_matcher = new AhoCorasick();
 	} else if (!strncmp(matcher_type, WuManber::NAME, strlen(WuManber::NAME))) {
 		_matcher = new WuManber();
 	} else if (!strncmp(matcher_type, CompressedAhoCorasick::NAME, strlen(CompressedAhoCorasick::NAME))) {
 		_matcher = new CompressedAhoCorasick();
+	} else if (!strncmp(matcher_type, AhoCorasick_Other::NAME, strlen(AhoCorasick_Other::NAME))) {
+		_matcher = new AhoCorasick_Other();
 	} else {
 		errh->error("Unknown matcher type %s", matcher_type);
 		return -1;
@@ -97,12 +99,14 @@ bool StringMatcher::is_valid_patterns(Vector<String> &patterns, ErrorHandler *er
 	MyMatcher *matcher;
 	MyMatcher::EnumReturnStatus rv;
 
-	if (!strncmp(_matcher->getMatcherType(), AhoCorasick::NAME, strlen(AhoCorasick::NAME))) {
+	if (!strncmp(_matcher->getMatcherType(), AhoCorasick::NAME, strlen(AhoCorasick::NAME)) && strlen(_matcher->getMatcherType()) == strlen(AhoCorasick::NAME)) {
 		matcher = new AhoCorasick();
 	} else if (!strncmp(_matcher->getMatcherType(), WuManber::NAME, strlen(WuManber::NAME))) {
 		matcher = new WuManber();
 	} else if (!strncmp(_matcher->getMatcherType(), CompressedAhoCorasick::NAME, strlen(CompressedAhoCorasick::NAME))) {
 		matcher = new CompressedAhoCorasick();
+	} else if (!strncmp(_matcher->getMatcherType(), AhoCorasick_Other::NAME, strlen(AhoCorasick_Other::NAME))) {
+		matcher = new AhoCorasick_Other();
 	} else {
 		valid = false;
 		errh->error("Invalid matcher type %s", _matcher->getMatcherType());
@@ -209,8 +213,9 @@ void StringMatcher::add_handlers() {
 
 CLICK_ENDDECLS
 ELEMENT_REQUIRES(userlevel AhoCorasick)
-ELEMENT_REQUIRES(userlevel Binascii)
 ELEMENT_REQUIRES(userlevel WuManber)
 ELEMENT_REQUIRES(userlevel CompressedAhoCorasick)
+ELEMENT_REQUIRES(userlevel AhoCorasick_Other)
+ELEMENT_REQUIRES(userlevel Binascii)
 EXPORT_ELEMENT(StringMatcher)
 ELEMENT_MT_SAFE(StringMatcher)

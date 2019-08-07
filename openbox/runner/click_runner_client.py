@@ -117,9 +117,9 @@ class ClickRunnerClient(object):
         cmd = [self.click_bin]
         if self.expression:
             cmd.append('-e')
-            cmd.append("\'{}\'".format(self.expression))
+            cmd.append("{}".format(self.expression))
         if self.network_stack == NetworkStack.DPDK:
-            cmd.append('--dpdk -c 0x01 -n 1 --')  # Should receive processor affinity (e.g. 0x04) from config
+            cmd.extend(["--dpdk", "-c", "0x04", "-n", "1", "--"])  # Should receive processor affinity (e.g. 0x04) from config
         if self.allow_reconfigure:
             cmd.append('-R')
         if self.nthreads:
