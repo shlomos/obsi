@@ -23,8 +23,8 @@ if [[ $mode == "dpdk" ]]; then
 	for iface in $@; do
 		echo "Preparing interface "$iface
 		bus_id=$(ethtool -i $iface | grep bus | cut -d" " -f 2)
-		$RTE_SDK/usertools/dpdk-devbind.py -u $iface
-		$RTE_SDK/usertools/dpdk-devbind.py -b igb_uio $bus_id
+		/usr/local/share/dpdk/usertools/dpdk-devbind.py -u $iface
+		/usr/local/share/dpdk/usertools/dpdk-devbind.py -b igb_uio $bus_id
 	done;
 fi
 if [[ $mode == "netmap" ]]; then

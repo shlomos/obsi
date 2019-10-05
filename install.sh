@@ -70,6 +70,7 @@ function install_click {
 	cd $BUILD_DIR
 	git clone $CLICK_URL
 	cd fastclick
+	git checkout 3199a7f5c57ed7aab157766b97c3ee7ca9a57513
 	echo "[+] Patching Click"
 	git apply $OBSI_DIR/click_controlsocket.patch $OBSI_DIR/dpdk_reconfiguration.patch  $OBSI_DIR/fromhost_reconfigure_tun_fix.patch
 	echo "[+] Configuring Click"
