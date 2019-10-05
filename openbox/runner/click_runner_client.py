@@ -135,7 +135,11 @@ class ClickRunnerClient(object):
         self._error_messages = None
 
     def _start_click(self, cmd_args):
-        return psutil.Popen(cmd_args, stderr=subprocess.PIPE)
+	self.log = open("/tmp/cl_log.txt", "wb")
+        k = psutil.Popen(cmd_args, stderr=self.log, stdout=self.log)
+	self.log.flush()
+	self.log.close()
+	return k
 
     def _check(self):
         cmd = self._build_check_command()

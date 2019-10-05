@@ -37,6 +37,7 @@ int StringMatcher::configure(Vector<String> &conf, ErrorHandler *errh)
 
 	matcher_type = m_type.c_str();
 	if (!strncmp(matcher_type, AhoCorasick::NAME, strlen(AhoCorasick::NAME)) && m_type.length() == strlen(AhoCorasick::NAME)) {
+		printf("ac\n");
 		_matcher = new AhoCorasick();
 	} else if (!strncmp(matcher_type, WuManber::NAME, strlen(WuManber::NAME))) {
 		_matcher = new WuManber();
@@ -44,6 +45,7 @@ int StringMatcher::configure(Vector<String> &conf, ErrorHandler *errh)
 		_matcher = new CompressedAhoCorasick();
 	} else if (!strncmp(matcher_type, AhoCorasick_Other::NAME, strlen(AhoCorasick_Other::NAME))) {
 		_matcher = new AhoCorasick_Other();
+		printf("aco\n");
 	} else {
 		errh->error("Unknown matcher type %s", matcher_type);
 		return -1;

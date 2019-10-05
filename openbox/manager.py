@@ -63,7 +63,7 @@ class Manager(object):
         self.state = ManagerState.EMPTY
         self._http_client = httpclient.HTTPClient()
         self._alert_registered = False
-        self.obsi_id = getnode()  # A unique identifier of this OBSI
+        self.obsi_id = 41  # getnode()  # A unique identifier of this OBSI
         self._engine_running = False
         self._engine_running_lock = locks.Lock()
         self._processing_graph_set = False
