@@ -7,11 +7,12 @@ RE2_TAG="2015-11-01"
 CLICK_URL="https://github.com/tbarbette/fastclick.git"
 NETMAP_URL="https://github.com/luigirizzo/netmap.git"
 DPDK_URL="https://github.com/DPDK/dpdk.git"
+NUM_THREAD=${NUM_THREAD:-4}
 #CLICK_INSTALL_DIR=$HOME/click
 
 function install_build_utils {
 	apt-get update
-	apt-get install build-essential python-dev g++ python-pip git libpcap-dev zlib1g-dev pkg-config ethtool linux-headers-$(uname -r)
+	apt-get install build-essential python-dev g++ python-pip autoconf git libpcap-dev zlib1g-dev pkg-config ethtool libnuma-dev linux-headers-$(uname -r)
 }
 
 function install_re2 {
@@ -55,11 +56,11 @@ function install_dpdk {
 	make config T=$RTE_TARGET O=$RTE_TARGET
 	cd $BUILD_DIR/dpdk/$RTE_TARGET
 	sed -ri 's,(CONFIG_RTE_LIBRTE_PMD_PCAP=).*,\1y,' .config
-	cd $BUILD_DIR/dpdk
 	echo "[+] Building DPDK"
-	make
+	make -j $NUM_THREAD T=$RTE_TARGET EXTRA_FLAGS="-fPIC"
 	echo "[+] Installing DPDK"
-	make install T=$RTE_TARGET EXTRA_CFLAGS="-fPIC"
+	make install
+	RTE_SDK=$BUILD_DIR/dpdk
 	echo "export RTE_TARGET="$RTE_TARGET >> ~/.bashrc
 	echo "export RTE_SDK="$BUILD_DIR/dpdk >> ~/.bashrc
 }
@@ -72,11 +73,11 @@ function install_click {
 	echo "[+] Patching Click"
 	git apply $OBSI_DIR/click_controlsocket.patch $OBSI_DIR/dpdk_reconfiguration.patch  $OBSI_DIR/fromhost_reconfigure_tun_fix.patch
 	echo "[+] Configuring Click"
-	 ./configure --disable-linuxmodule --disable-linux-symbols --disable-linuxmodule --disable-bsdmodule --enable-all-elements --enable-user-multithread --enable-stats=1 --enable-json --disable-test
+	# ./configure --disable-linuxmodule --disable-linux-symbols --disable-linuxmodule --disable-bsdmodule --enable-all-elements --enable-user-multithread --enable-stats=1 --enable-json --disable-test
 	# Uncomment to compile with netmap
 	#./configure --with-netmap --enable-netmap-pool --enable-multithread --disable-linuxmodule --enable-intel-cpu --enable-user-multithread --verbose --enable-select=poll --enable-poll --enable-bound-port-transfer --enable-local --enable-zerocopy --enable-batch --enable-json --disable-test --enable-stats
 	# Uncomment to compile with dpdk
-	#./configure --enable-multithread --disable-linuxmodule --enable-intel-cpu --enable-user-multithread --verbose --enable-poll --enable-bound-port-transfer --enable-dpdk --enable-batch --with-netmap=no --enable-zerocopy --disable-dpdk-pool --disable-dpdk-packet --enable-json --enable-local --disable-test --enable-stats
+	./configure RTE_TARGET=$RTE_TARGET RTE_SDK=$RTE_SDK --enable-multithread --disable-linuxmodule --enable-intel-cpu --enable-user-multithread --verbose --enable-poll --enable-bound-port-transfer --enable-dpdk --enable-batch --with-netmap=no --enable-zerocopy --disable-dpdk-pool --disable-dpdk-packet --enable-json --enable-local --disable-test --enable-stats
 	echo "[+] Compiling Click"
 	make
 	echo "[+] Installing Click"
@@ -102,7 +103,7 @@ function install_python_dependency {
 install_build_utils
 rm -rf $BUILD_DIR
 mkdir $BUILD_DIR
-install_netmap
+#install_netmap
 install_dpdk
 install_re2
 install_click
@@ -110,12 +111,11 @@ install_openbox_click_package
 install_python_dependency
 
 # this command is needed to disable NIC offloading
-113 # sudo ethtool -K eth1 tx off rx off gso off tso off gro off lro off
-114
-115 # This is needed if using DPDK:
-116 # echo 1024 > /sys/devices/system/node/node0/hugepages/hugepages-1024kB/nr_hugepages
-117 # mkdir /mnt/huge
-118 # mount -t hugetlbfs nodev /mnt/huge
-119 # modprobe uio
-120 # modprobe vfio-pci
+# sudo ethtool -K eth1 tx off rx off gso off tso off gro off lro off
+# This is needed if using DPDK:
+# echo 1024 > /sys/devices/system/node/node0/hugepages/hugepages-1024kB/nr_hugepages
+# mkdir /mnt/huge
+# mount -t hugetlbfs nodev /mnt/huge
+# modprobe uio
+# modprobe vfio-pci
 

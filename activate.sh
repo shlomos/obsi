@@ -19,7 +19,7 @@ if [[ $mode == "dpdk" ]]; then
 	mount -t hugetlbfs nodev /mnt/huge
 	modprobe uio
 	modprobe vfio-pci
-	insmod $RTE_SDK/build/kmod/igb_uio.ko
+	insmod $RTE_SDK/$RTE_TARGET/kmod/igb_uio.ko
 	for iface in $@; do
 		echo "Preparing interface "$iface
 		bus_id=$(ethtool -i $iface | grep bus | cut -d" " -f 2)
